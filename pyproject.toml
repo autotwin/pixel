@@ -5,11 +5,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atpixel"
-version = "0.0.1"
+version = "0.0.1a1"
 authors = [
   { name="Chad Hovey", email="chovey@sandia.gov" },
+  { name="Emma Lejeune", email="elejeune@bu.edu" },
 ]
-description = "pixel functionality for the autotwin workflow"
+description = "autotwin workflow, pixel functionality"
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.7"
@@ -17,6 +18,11 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+]
+dependencies = [
+    "matplotlib",
+    "pytest",
+    "pytest-cov"
 ]
 
 [project.urls]
