@@ -20,6 +20,12 @@ def test_two():
 
     assert found == known
 
+def test_add_two():
+	x = 3
+	y = 7.0
+	known = 10 
+	found = hh.add_two(x,y)
+	assert found == known
 
 def test_adios():
     known = "Bye"
