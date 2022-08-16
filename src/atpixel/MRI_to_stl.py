@@ -1,23 +1,26 @@
-import alphashape
-import cv2
-import glob as glob
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-import nibabel as nib
-import numpy as np 
-import os 
-import pydicom as dicom
-from shapely.geometry import Point
-from skimage import filters
-from skimage import measure
-from skimage import morphology
-from skimage.measure import label
-from skimage.measure import marching_cubes
+# import alphashape
+# import cv2
+# import glob as glob
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+# import nibabel as nib
+# import numpy as np
+# import os
+# import pydicom as dicom
+# from shapely.geometry import Point
+# from skimage import filters
+# from skimage import measure
+# from skimage import morphology
+# from skimage.measure import label
+# from skimage.measure import marching_cubes
 from skimage.filters import threshold_otsu
-from stl import mesh
-import time
 
-def compute_otsu_thresh(array:'value numpy array') -> 'threshold value':
-	"""Given a value numpy array. Will return the otsu threshold value."""
-	thresh = threshold_otsu(array)
-	return thresh
+# from stl import mesh
+# import time
+from typing import Iterable, Union
+
+
+def compute_otsu_thresh(array: Iterable) -> Union[float, int]:
+    """Given a value numpy array. Will return the otsu threshold value."""
+    thresh = threshold_otsu(array)
+    return thresh
