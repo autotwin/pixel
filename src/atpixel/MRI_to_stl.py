@@ -24,3 +24,4 @@ def compute_otsu_thresh(array: Iterable) -> Union[float, int]:
     """Given a value numpy array. Will return the otsu threshold value."""
     thresh = threshold_otsu(array)
     return thresh
+
