@@ -1,13 +1,13 @@
-# import alphashape
+import alphashape
 # import cv2
 # import glob as glob
 # import matplotlib.pyplot as plt
 # from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # import nibabel as nib
-# import numpy as np
+import numpy as np
 # import os
 # import pydicom as dicom
-# from shapely.geometry import Point
+from shapely.geometry import Point
 # from skimage import filters
 from skimage import measure
 # from skimage import morphology
@@ -55,4 +55,17 @@ def contour_points_slice(array_2D: Iterable,thresh: Union[float,int]) -> Iterabl
 		contour_counter += 1
 	return point_list 
 
+def alpha_shape_mask_slice(array_2D: Iterable,thresh: Union[float,int],alpha_shape_value:float= 0.0) -> Iterable:
+	"""Given a 2D image, a threshold, and value for computing the alpha shape. 
+	Will compute the alpha shape for each 2D image, turn that into a 2D mask.
+	NOTE: this function will work for slices in any direction, but for best results 
+	we are expecting TRANSVERSE slices -- i.e., NOT sagital or coronal. 
+	For additional info: https://alphashape.readthedocs.io/en/latest/"""
+	point_list = contour_points_slice(array_2D,thresh)
+	alpha_shape = alphashape.alphashape(point_list, alpha_shape_value)
+	mask_2D = np.zeros(array_2D.shape)
+	for jj in range(mask_2D.shape[0]):
+		for kk in range(mask_2D.shape[1]):
+			mask_2D[jj,kk] = alpha_shape.contains(Point(jj,kk))
+	return mask_2D
 
