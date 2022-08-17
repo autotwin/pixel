@@ -24,7 +24,7 @@ We further hypothesize that the volume and curvature metrics of the numerical re
   * `dicom`: number of pixels per unit length
   * `stl`: number of triangles per isosurface tesselation, and 
   * `inp`: number of finite elements in a mesh.
-* **Volume** is the $\real^3$ metric of space contained in the analytical domain $\Omega$.
+* **Volume** is the $\mathbb{R}^3$ metric of space contained in the analytical domain $\Omega$.
   * For a domain $\Omega$ that is manifold.
   * For a domain $\Omega$ with watertight boundary $\partial \Omega$.
 * **Curvature** is defined as the local second derivative of the boundary $\partial \Omega$.
