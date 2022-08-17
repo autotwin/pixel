@@ -8,9 +8,6 @@ Pixel data types
 
 [![tests](https://github.com/autotwin/pixel/workflows/tests/badge.svg)](https://github.com/autotwin/pixel/actions)
 [![codecov](https://codecov.io/gh/autotwin/pixel/branch/main/graph/badge.svg?token=1Z716PHWAW)](https://codecov.io/gh/autotwin/pixel)
-## Config
-
-See [autotwin/mesh/config/README.md](https://github.com/autotwin/mesh/tree/main/config/README.md)
 
 ## Config
 
