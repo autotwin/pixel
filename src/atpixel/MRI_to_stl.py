@@ -134,7 +134,7 @@ def padded_mask_to_verts_faces(array: Iterable, marching_step_size: int) -> Iter
 	verts,faces, normals,_ = marching_cubes(array, step_size = marching_step_size)
 	return verts, faces
 
-def faces_verts_to_mesh_object(verts: Iterable, faces: Iterable) -> 'mesh object':
+def faces_verts_to_mesh_object(verts: Iterable, faces: Iterable) -> mesh.Mesh.dtype:
 	"""Given vertices and faces arrays. Converts them into a mesh object.""" 
 	mesh_for_stl = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
 	for i, f in enumerate(faces):
@@ -142,7 +142,7 @@ def faces_verts_to_mesh_object(verts: Iterable, faces: Iterable) -> 'mesh object
 			mesh_for_stl.vectors[i][j] = verts[f[j],:]
 	return mesh_for_stl
 
-def mask_to_mesh_for_stl(mask: Iterable, marching_step_size: int, pad_size: int = 10) -> 'mesh object':
+def mask_to_mesh_for_stl(mask: Iterable, marching_step_size: int, pad_size: int = 10) -> mesh.Mesh.dtype:
 	"""Given a mask array. Converts the mask array into a stl mesh object."""
 	padded_mask = pad_array(mask, pad_size)
 	verts, faces = padded_mask_to_verts_faces(padded_mask, marching_step_size)
