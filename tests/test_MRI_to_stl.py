@@ -100,7 +100,26 @@ def test_alpha_shape_mask_slice():
 @pytest.mark.skip("work in progress")
 def test_alpha_shape_mask_slice_concave():
     aa = 44
- 
+
+def test_alpha_shape_mask_all():
+    val = 10
+    array_1 = np.zeros((val*16,val*16,val*16))
+    array_2 = np.zeros((val*16,val*16,val*16))
+    big_shape = np.ones((val*4,val*4,val*4))
+    little_shape = np.zeros((val*2,val*2,val*2))
+    array_1[val*6:val*10,val*6:val*10,val*6:val*10] = big_shape
+    array_2[val*6:val*10,val*6:val*10,val*6:val*10] = big_shape
+    array_1[val*7:val*9,val*7:val*9,val*7:val*9] = little_shape
+    thresh = 0.5
+    alpha_shape_value = 0.0 
+    known = array_2 > thresh
+    found = mts.alpha_shape_mask_all(array_1,alpha_shape_value)
+    assert np.all(known == found)
+
+@pytest.mark.skip("work in progress")
+def test_alpha_shape_mask_all_concave():
+    aa = 44
+
 @pytest.mark.skip("work in progress")
 def test_example_skip():
     aa = 44

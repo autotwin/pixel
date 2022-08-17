@@ -69,3 +69,14 @@ def alpha_shape_mask_slice(array_2D: Iterable,thresh: Union[float,int],alpha_sha
 			mask_2D[jj,kk] = alpha_shape.contains(Point(jj,kk))
 	return mask_2D
 
+def alpha_shape_mask_all(array: Iterable,alpha_shape_value:float = 0.0) -> Iterable:
+	"""Given a 3D image, and value for computing the alpha shape. Will get a mask for each 
+	2D transverse slice based on the alpha shape, and then concatenate all of the 2D masks 
+	into a 3D mask that will be used to define the outer surface of the scan.""" 
+	mask_3D = np.zeros(array.shape)
+	thresh = compute_otsu_thresh(array)
+	for kk in range(0,mask_3D.shape[0]):
+		array_2D = array[kk,:,:]
+		mask_2D = alpha_shape_mask_slice(array_2D,thresh,alpha_shape_value)
+		mask_3D[kk,:,:] = mask_2D
+	return mask_3D
