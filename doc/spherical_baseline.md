@@ -24,7 +24,10 @@ We further hypothesize that the volume and curvature metrics of the numerical re
   * `dicom`: number of pixels per unit length
   * `stl`: number of triangles per isosurface tesselation, and 
   * `inp`: number of finite elements in a mesh.
-* **Curvature** is well defined as the local second derivative at the boundary $\partial \Omega$.
+* **Volume** is the $\real^3$ metric of space contained in the analytical domain $\Omega$.
+  * For a domain $\Omega$ that is manifold.
+  * For a domain $\Omega$ with watertight boundary $\partial \Omega$.
+* **Curvature** is defined as the local second derivative of the boundary $\partial \Omega$.
 * **Error** is the difference between the known ground truth value of volume and local curvature.
 * **Error rate** is the slope of error versus resolution.
 
