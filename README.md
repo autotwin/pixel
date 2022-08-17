@@ -12,3 +12,11 @@ Pixel data types
 
 See [autotwin/mesh/config/README.md](https://github.com/autotwin/mesh/tree/main/config/README.md)
 
+## Config
+
+See [config/README.md](config/README.md)
+
+## Workflow
+
+To come.
+
