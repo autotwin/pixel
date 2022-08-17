@@ -5,7 +5,7 @@
 * Configure the local machine with a virtual environment named `atpixelenv`.  
 * Create a `pyproject.toml` to configure the `atpixel` package.
 * Install the `atpixel` module in developer mode.
-* Assess unit tests and code coverage of the `atpxel` module.
+* Assess unit tests and code coverage of the `atpixel` module.
 
 ## Methods
 
