@@ -25,3 +25,10 @@ def compute_otsu_thresh(array: Iterable) -> Union[float, int]:
     thresh = threshold_otsu(array)
     return thresh
 
+def apply_otsu_thresh(array: Iterable) -> Iterable:
+	"""Given a value numpy array. Will return a boolean numpy array with an otsu threshold 
+	applied."""
+	thresh = compute_otsu_thresh(array)
+	thresh_img = array > thresh
+	return thresh_img
+
