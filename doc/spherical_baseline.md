@@ -41,3 +41,28 @@ We used an analytical shape of a sphere with radius = 10 cm.  A sphere is a usef
 * has a known analytical local curvature
 
 We selected this radius because it is the same order of magnitude as the human head.
+
+## Cubit
+
+```bash
+Cubit>
+sphere radius 10.0
+volume 1  size auto factor 10
+mesh volume 1
+export facets "/Users/cbh/autotwin/mesh/tests/files/sphere_size_factor_10.fac"  overwrite 
+```
+
+## `atmesh`
+
+To come.
+
+
+## References
+
+* Stanford cs468-10-fall Subdivision  
+  * http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/10_Subdivision.pdf
+* https://rosettacode.org/wiki/Catmull%E2%80%93Clark_subdivision_surface
+* https://docs.juliahub.com/Meshes/FuRcu/0.17.1/algorithms/refinement.html#Catmull-Clark
+* https://docs.juliahub.com/Meshes/FuRcu/0.17.1/algorithms/smoothing.html#Taubin
+
+
