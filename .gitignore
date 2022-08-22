@@ -1,3 +1,6 @@
+# local vs code configuration
+.vscode/
+
 # macOS database files
 .DS_Store
 
