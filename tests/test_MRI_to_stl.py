@@ -6,13 +6,13 @@ from skimage.measure import marching_cubes
 import pytest
 from stl import mesh
 
-def test_rotate_to_ix0_transverse_axis():
-    #TODO: write this test! 
-    assert True
+# def test_rotate_to_ix0_transverse_axis():
+#     #TODO: write this test! 
+#     assert True
 
-def test_re_scale_MRI_intensity():
-    #TODO: write this test!
-    assert True
+# def test_re_scale_MRI_intensity():
+#     #TODO: write this test!
+#     assert True
 
 def test_compute_otsu_thresh():
     x1 = np.random.random((100, 100,100))
