@@ -90,10 +90,10 @@ Installing from a local source tree, reference:
 * https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-from-a-local-src-tree, and
 * development mode: https://setuptools.pypa.io/en/latest/userguide/development_mode.html
 
-Now, create an editable install (aka development mode):
+Now, create an editable install (aka development mode, note that `-e .` is equivalent to `--editable .`):
 
 ```bash
-python -m pip install -e .  # note: `-e .` = `--editable .`
+python -m pip install -e . 
 ```
 
 At the time of this writing, the current version of `atpixel` is shown below.  Your version may be newer.  Post-install package status:
