@@ -130,7 +130,7 @@ def dilate_mask(array: Iterable, radius: int) -> Iterable:
     dilated_array = morphology.binary_dilation(array, footprint)
     return dilated_array
 
-# ask EL
+
 def close_mask(array: Iterable, radius: int) -> Iterable:
     """Given a 3D binary array, will close holes with a spherical footprint."""
     footprint = morphology.ball(radius, dtype=bool)
