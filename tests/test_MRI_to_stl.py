@@ -5,6 +5,7 @@ from pathlib import Path
 from skimage.filters import threshold_otsu
 from skimage import morphology
 from skimage.measure import marching_cubes
+import platform
 import pytest
 from stl import mesh
 import sys
@@ -307,7 +308,10 @@ def test_yml_to_dict():
     assert db["dilation_radius"] == 5
 
 
-@pytest.mark.skipif(sys.platform == 'linux', reason="Linux CI folder structure fails this test.")
+@pytest.mark.skipif(
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
+    reason="Run on Atlas and bu.edu machines only.",
+)
 def test_string_to_path():
     known = Path(__file__)
     path_string_1 = "~/autotwin/pixel/tests/test_MRI_to_stl.py"
@@ -329,7 +333,10 @@ def test_string_to_boolean():
     assert mts.string_to_boolean("True")
 
 
-@pytest.mark.skipif(sys.platform == 'linux', reason="Linux CI folder structure fails this test.")
+@pytest.mark.skipif(
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
+    reason="Run on Atlas and bu.edu machines only.",
+)
 def test_save_mask():
     path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
     path = mts.string_to_path(path_string_1)
@@ -341,7 +348,10 @@ def test_save_mask():
         os.remove(path)  # clean up, remove test file
 
 
-@pytest.mark.skipif(sys.platform == 'linux', reason="Linux CI folder structure fails this test.")
+@pytest.mark.skipif(
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
+    reason="Run on Atlas and bu.edu machines only.",
+)
 def test_save_stl():
     path_string_1 = "~/autotwin/pixel/tests/test_save_stl_987311.stl"
     path = mts.string_to_path(path_string_1)
@@ -356,7 +366,10 @@ def test_save_stl():
         os.remove(path)  # clean up, remove test file
 
 
-@pytest.mark.skipif(sys.platform == 'linux', reason="Linux CI folder structure fails this test.")
+@pytest.mark.skipif(
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
+    reason="Run on Atlas and bu.edu machines only.",
+)
 def test_run_and_time_all_code():
     def path_setup_in_files(fname):
         self_path_file = Path(__file__)

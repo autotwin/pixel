@@ -13,6 +13,6 @@ def add_two(x, y):
 def bubble_sort():
     return True
 
+
 def hello_pixel():
     return "Hello pixel!"
-

@@ -20,12 +20,14 @@ def test_two():
 
     assert found == known
 
+
 def test_add_two():
-	x = 3
-	y = 7.0
-	known = 10 
-	found = hh.add_two(x,y)
-	assert found == known
+    x = 3
+    y = 7.0
+    known = 10
+    found = hh.add_two(x, y)
+    assert found == known
+
 
 def test_adios():
     known = "Bye"
@@ -43,4 +45,3 @@ def test_pixel_repo():
     found = hh.hello_pixel()
 
     assert found == known
-    
