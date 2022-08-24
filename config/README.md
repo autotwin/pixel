@@ -90,8 +90,9 @@ Installing from a local source tree, reference:
 * https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-from-a-local-src-tree, and
 * development mode: https://setuptools.pypa.io/en/latest/userguide/development_mode.html
 
+Now, create an editable install (aka development mode):
+
 ```bash
-# create an editable install (aka development mode)
 python -m pip install -e .  # note: `-e .` = `--editable .`
 ```
 
