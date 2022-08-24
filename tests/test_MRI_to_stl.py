@@ -309,8 +309,8 @@ def test_yml_to_dict():
 
 
 @pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
-    reason="Run on Atlas and bu.edu machines only.",
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+    reason="Run on Atlas, eml, and bu.edu machines only.",
 )
 def test_string_to_path():
     known = Path(__file__)
@@ -334,8 +334,8 @@ def test_string_to_boolean():
 
 
 @pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
-    reason="Run on Atlas and bu.edu machines only.",
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+    reason="Run on Atlas, eml, and bu.edu machines only.",
 )
 def test_save_mask():
     path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
@@ -349,8 +349,8 @@ def test_save_mask():
 
 
 @pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
-    reason="Run on Atlas and bu.edu machines only.",
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+    reason="Run on Atlas, eml, and bu.edu machines only.",
 )
 def test_save_stl():
     path_string_1 = "~/autotwin/pixel/tests/test_save_stl_987311.stl"
@@ -367,8 +367,8 @@ def test_save_stl():
 
 
 @pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node),
-    reason="Run on Atlas and bu.edu machines only.",
+    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+    reason="Run on Atlas, eml, and bu.edu machines only.",
 )
 def test_run_and_time_all_code():
     def path_setup_in_files(fname):
