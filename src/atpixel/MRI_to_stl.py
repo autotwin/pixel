@@ -194,6 +194,11 @@ def _yml_to_dict(*, yml_path_file: Path) -> dict:
     # It will convert more characters into lower case, and will find more matches
     # on comparison of two strings that are both are converted
     # using the casefold() method.
+    atpixel: str = "atpixel>"
+    
+    if not yml_path_file.is_file():
+        raise FileNotFoundError(f"{atpixel} File not found: {str(yml_path_file)}")
+    
     file_type = yml_path_file.suffix.casefold()
 
     supported_types = (".yaml", ".yml")
