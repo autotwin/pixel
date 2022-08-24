@@ -328,6 +328,7 @@ def test_string_to_boolean():
     assert mts.string_to_boolean("False") is not True
     assert mts.string_to_boolean("True")
 
+
 @pytest.mark.skipif(sys.platform == 'linux', reason="Linux CI folder structure fails this test.")
 def test_save_mask():
     path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
