@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atpixel"
-version = "0.0.4"
+version = "0.0.5"
 authors = [
   { name="Chad Hovey", email="chovey@sandia.gov" },
   { name="Emma Lejeune", email="elejeune@bu.edu" },
@@ -27,6 +27,7 @@ dependencies = [
     "click-log==0.4.0",
     "coverage==6.4.4",
     "cycler==0.11.0",
+    "flake8",
     "fonttools==4.34.4",
     "imageio==2.21.1",
     "importlib-metadata==4.12.0",
@@ -36,7 +37,7 @@ dependencies = [
     "mypy-extensions==0.4.3",
     "networkx==2.6.3",
     "nibabel==4.0.1",
-    "numpy==1.21.6",
+    "numpy==1.22",
     "numpy-stl==2.17.1",
     "opencv-python==4.6.0.66",
     "packaging==21.3",
