@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atpixel"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
   { name="Chad Hovey", email="chovey@sandia.gov" },
   { name="Emma Lejeune", email="elejeune@bu.edu" },
@@ -45,6 +45,7 @@ dependencies = [
     "platformdirs==2.5.2",
     "pluggy==1.0.0",
     "py==1.11.0",
+    "PyYAML==6.0",
     "pydicom==2.3.0",
     "pyparsing==3.0.9",
     "pytest==7.1.2",

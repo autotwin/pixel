@@ -1,4 +1,6 @@
 import alphashape
+import argparse
+from atpixel import NIfTI_to_numpy as ntn
 # import cv2
 # import glob as glob
 # import matplotlib.pyplot as plt
@@ -6,6 +8,7 @@ import alphashape
 # import nibabel as nib
 import numpy as np
 # import os
+from pathlib import Path
 # import pydicom as dicom
 from shapely.geometry import Point
 # from skimage import filters
@@ -15,8 +18,10 @@ from skimage.measure import label
 from skimage.measure import marching_cubes
 from skimage.filters import threshold_otsu
 from stl import mesh
-# import time
+import sys
+import time
 from typing import Iterable, Union
+import yaml
 
 # def re_scale_MRI_intensity(array: Iterable) -> Iterable:
 # 	"""Given a 3D brain MRI array. Will re-scale intensity to enable white matter segment.
@@ -149,4 +154,167 @@ def mask_to_mesh_for_stl(mask: Iterable, marching_step_size: int, pad_size: int 
 	mesh_for_stl = faces_verts_to_mesh_object(verts, faces)
 	return mesh_for_stl
 
+def _yml_to_dict(*, yml_path_file: Path) -> dict:
+    """Given a valid Path to a yml input file, read it in and
+    return the result as a dictionary."""
 
+    # Compared to the lower() method, the casefold() method is stronger.
+    # It will convert more characters into lower case, and will find more matches
+    # on comparison of two strings that are both are converted
+    # using the casefold() method.
+    file_type = yml_path_file.suffix.casefold()
+
+    supported_types = (".yaml", ".yml")
+
+    if file_type not in supported_types:
+        raise TypeError("Only file types .yaml, and .yml are supported.")
+
+    try:
+        with open(yml_path_file, "r") as stream:
+            # See deprecation warning for plain yaml.load(input) at
+            # https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
+            db = yaml.load(stream, Loader=yaml.SafeLoader)
+    except yaml.YAMLError as error:
+        print(f"Error with YAML file: {error}")
+        # print(f"Could not open: {self.self.path_file_in}")
+        print(f"Could not open or decode: {yml_path_file}")
+        # raise yaml.YAMLError
+        raise OSError
+
+    version_specified = db.get("version")
+    version_implemented = 1.0
+
+    if version_specified != version_implemented:
+        raise ValueError(
+            f"Version mismatch: specified was {version_specified}, implemented is {version_implemented}"
+        )
+    else:
+        # manadating that files read in have at least these five keys
+        required_keys = (
+            "version",
+            "nii_path_file",
+            "mask_path_file_outer",
+            "stl_path_file_outer",
+			"mask_path_file_brain",
+            "stl_path_file_brain",
+            "has_metadata",
+			"process_outer",
+			"process_brain",
+			"alpha_shape_param",
+			"white_matter_min",
+			"white_matter_max",
+			"dilation_radius",
+			"close_radius",
+			"padding_for_stl",
+			"marching_step_size",
+        )
+        has_required_keys = all(tuple(map(lambda x: db.get(x), required_keys)))
+        if not has_required_keys:
+            raise KeyError(f"Input files must have these keys defined: {required_keys}")
+    return db
+
+def string_to_path(path_string:str) -> Path:
+	"""Given a string that specifies a path. Will turn into a Path type and expand ~ ."""
+	path_file = Path(path_string)
+	path_file_expanded = path_file.expanduser()
+	return path_file_expanded
+
+def path_to_string(path_file:Path) -> str:
+	"""Given a Path type. Will convert to a string."""
+	path_string = str(path_file)
+	return path_string 
+
+def string_to_boolean(val:str) -> bool:
+	"""Given a string from yaml that should be a boolean."""
+	val_boolean = val == 'True'
+	return val_boolean
+
+def save_mask(mask: Iterable,mask_path_file: Path) -> None:
+	"""Given a mask numpy array and file name will save mask in the mask folder."""
+	mask_path_string = path_to_string(mask_path_file)
+	np.save(mask_path_string,mask)
+	return 
+
+def save_stl(mesh: mesh.Mesh.dtype,file_name: Path) -> None:
+	"""Given a stl formatted mesh will save information in the stl."""
+	file_name_str = path_to_string(file_name)
+	mesh.save(file_name_str)
+	return 
+
+def run_and_time_all_code(input_file:Path) -> Iterable:
+	"""Runs every step of the pipeline and returns a list of timing for each step.
+	The optional argument is only used during de-bugging b/c this is the slowest step."""
+	time_all = [] 
+	time_all.append(time.time())
+	
+	# read input file 
+	fin = Path(input_file).expanduser()
+	if not fin.is_file():
+		raise FileNotFoundError(f"File not found: {input_file}")
+	
+	# extract input information from yaml file 
+	user_input = _yml_to_dict(yml_path_file=input_file)
+
+	nii_path_file = string_to_path(user_input['nii_path_file'])
+	mask_path_file_outer = string_to_path(user_input['mask_path_file_outer'])
+	stl_path_file_outer = string_to_path(user_input['stl_path_file_outer'])
+	mask_path_file_brain = string_to_path(user_input['mask_path_file_brain'])
+	stl_path_file_brain = string_to_path(user_input['stl_path_file_brain'])
+
+	has_metadata = string_to_boolean(user_input['has_metadata'])
+	process_outer = string_to_boolean(user_input['process_outer'])
+	process_brain = string_to_boolean(user_input['process_brain'])
+	
+	alpha_shape_param = user_input['alpha_shape_param']
+	white_matter_min = user_input['white_matter_min']
+	white_matter_max = user_input['white_matter_max']
+	dilation_radius = user_input['dilation_radius']
+	close_radius = user_input['close_radius']
+	padding_for_stl = user_input['padding_for_stl']
+	marching_step_size = user_input['marching_step_size']
+
+	# begin timing 
+	time_all.append(time.time())
+	
+	# import the NIfTI file as an array 
+	if has_metadata == False:
+		img_array = ntn.NIfTI_to_numpy(nii_path_file)
+	time_all.append(time.time())
+	
+	# create the mask that defines the outer surface
+	if process_outer:
+		outer_mask = alpha_shape_mask_all(img_array,alpha_shape_param)
+		save_mask(outer_mask,mask_path_file_outer)
+	time_all.append(time.time())
+
+	# create the mask that defines the brain surface 
+	if process_brain:
+		brain_mask = mask_brain(img_array,white_matter_min,white_matter_max,dilation_radius,close_radius)
+		save_mask(brain_mask,mask_path_file_brain)
+	time_all.append(time.time())
+
+	# create the mesh that defines the outer surface 
+	if process_outer:
+		outer_mesh = mask_to_mesh_for_stl(outer_mask, marching_step_size, padding_for_stl)
+		save_stl(outer_mesh,stl_path_file_outer)
+	time_all.append(time.time())
+
+	# create the mesh that defines the brain surface 
+	if process_brain:
+		brain_mesh = mask_to_mesh_for_stl(brain_mask, marching_step_size, padding_for_stl)
+		save_stl(brain_mesh,stl_path_file_brain)
+	time_all.append(time.time())
+	
+	return time_all
+
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument("input_file", help="the .yml user input file")
+	args = parser.parse_args()
+	input_file_str = args.input_file
+	input_file = Path(input_file_str)
+	time_all =  run_and_time_all_code(input_file)
+	time_i = time_all[0]
+	time_f = time_all[-1]
+	minutes = (time_f-time_i) / 60.0
+	print('code ran in ',minutes,' minutes')

@@ -1,0 +1,17 @@
+# User input to accompany small_sphere_no_metadata.nii
+version: 1.0
+nii_path_file: "~/autotwin/pixel/tests/files/small_sphere_no_metadata.nii"
+mask_path_file_outer: "~/autotwin/pixel/tests/files/small_sphere_no_metadata_outer.npy"
+stl_path_file_outer: "~/autotwin/pixel/tests/files/small_sphere_no_metadata_outer.stl"
+mask_path_file_brain: "~/autotwin/pixel/tests/files/small_sphere_no_metadata_brain.npy"
+stl_path_file_brain: "~/autotwin/pixel/tests/files/small_sphere_no_metadata_brain.stl"
+has_metadata: 'False'
+process_outer: 'True'
+process_brain: 'False' 
+alpha_shape_param: 0.05 #0.0 is convex, 0.1 works well, 2.0 is concave (not functioning properly)
+white_matter_min: 400. #further work will need to be done to refine this method
+white_matter_max: 600. #further work will need to be done to refine this method
+dilation_radius: 5 #future will will overhaul this method
+close_radius: 5 #future will will overhaul this method
+padding_for_stl: 10 #just to make sure the stl is closed even if it intersects with the domain boundaries
+marching_step_size: 1 #input parameter to marching_cubes

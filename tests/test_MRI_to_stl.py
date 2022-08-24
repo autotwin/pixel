@@ -1,5 +1,7 @@
 from atpixel import MRI_to_stl as mts
 import numpy as np
+import os 
+from pathlib import Path
 from skimage.filters import threshold_otsu
 from skimage import morphology
 from skimage.measure import marching_cubes
@@ -251,4 +253,74 @@ def test_mask_to_mesh_for_stl():
     mesh_for_stl_known = mts.faces_verts_to_mesh_object(verts_known, faces_known) 
     mesh_for_stl_found = mts.mask_to_mesh_for_stl(array, marching_step_size, pad_size)
     assert np.all(mesh_for_stl_known.points == mesh_for_stl_found.points) and np.all(mesh_for_stl_known.vectors == mesh_for_stl_found.vectors)
-    
+
+def test_yml_to_dict():
+    self_path_file = Path(__file__)
+    self_path = self_path_file.resolve().parent
+    data_path = self_path.joinpath("files").resolve()
+    input_file_path = data_path.joinpath("small_sphere_no_metadata.yaml")
+    db = mts._yml_to_dict(yml_path_file = input_file_path)
+    assert db['version'] == 1.0
+    assert db['nii_path_file'] == "~/autotwin/pixel/tests/files/small_sphere_no_metadata.nii"
+    assert db['has_metadata'] == 'False'
+    assert db['alpha_shape_param'] == 0.05
+    assert db['dilation_radius'] == 5
+
+
+def test_string_to_path():
+    known =  Path(__file__)
+    path_string_1 = '~/autotwin/pixel/tests/test_MRI_to_stl.py'
+    found = mts.string_to_path(path_string_1)
+    assert known == found
+
+def test_path_to_string():
+    path_1 = Path(__file__)
+    known = str(path_1)
+    found = mts.path_to_string(path_1)
+    assert known == found 
+
+def test_string_to_boolean():
+    assert False == mts.string_to_boolean('False')
+    assert True == mts.string_to_boolean('True')
+
+def test_save_mask():
+    path_string_1 = '~/autotwin/pixel/tests/test_save_mask_987311.npy'
+    path = mts.string_to_path(path_string_1)
+    mask = morphology.ball(10, dtype=bool)
+    mts.save_mask(mask,path)
+    file_exists = path.is_file()
+    if file_exists:
+        os.remove(path)
+    assert file_exists
+
+def test_save_stl():
+    path_string_1 = '~/autotwin/pixel/tests/test_save_stl_987311.stl'
+    path = mts.string_to_path(path_string_1)
+    mask = morphology.ball(10, dtype=bool)
+    marching_step_size = 1
+    pad_size = 10 
+    mesh = mts.mask_to_mesh_for_stl(mask,marching_step_size,pad_size)
+    mts.save_stl(mesh,path)
+    file_exists = path.is_file()
+    if file_exists:
+        os.remove(path)
+    assert file_exists
+
+def test_run_and_time_all_code():
+    self_path_file = Path(__file__)
+    self_path = self_path_file.resolve().parent
+    data_path = self_path.joinpath("files").resolve()
+    input_file = data_path.joinpath("quad_sphere_no_metadata.yaml")
+    path_1 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.npy")
+    path_2 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl")
+    path_3 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.npy")
+    path_4 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.stl")
+    output_path_list = [path_1,path_2,path_3,path_4] 
+    for op in output_path_list:
+        if op.is_file():
+            os.remove(op)
+    aa = 44
+    time_all = mts.run_and_time_all_code(input_file)
+    assert len(time_all) == 7
+    for op in output_path_list:
+        assert op.is_file()
