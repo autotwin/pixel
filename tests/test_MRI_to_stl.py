@@ -307,6 +307,7 @@ def test_yml_to_dict():
     assert db["alpha_shape_param"] == 0.05
     assert db["dilation_radius"] == 5
 
+
 def test_when_io_fails():
     """Given a file name or a path that does not exist, checks that the
     function raises a FileNotFoundError."""
@@ -325,7 +326,7 @@ def test_when_io_fails():
         input_file = data_path.joinpath("this_file_does_not_exist.yml")
         mts.run_and_time_all_code(input_file)
     assert error.typename == "FileNotFoundError"
-    
+
     # If the user tries to run with a file type that is not a .yml or .yaml,
     # then check that a TypeError is raised.
     with pytest.raises(TypeError) as error:
@@ -364,13 +365,11 @@ def test_string_to_path():
     found = mts.string_to_path(path_string_1)
     assert known == found
 
-
 def test_path_to_string():
     path_1 = Path(__file__)
     known = str(path_1)
     found = mts.path_to_string(path_1)
     assert known == found
-
 
 def test_string_to_boolean():
     # assert False == mts.string_to_boolean("False")
