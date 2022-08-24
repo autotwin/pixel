@@ -307,14 +307,19 @@ def test_save_stl():
     assert file_exists
 
 def test_run_and_time_all_code():
-    self_path_file = Path(__file__)
-    self_path = self_path_file.resolve().parent
-    data_path = self_path.joinpath("files").resolve()
-    input_file = data_path.joinpath("quad_sphere_no_metadata.yaml")
-    path_1 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.npy")
-    path_2 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl")
-    path_3 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.npy")
-    path_4 = mts.string_to_path("~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.stl")
+    def path_setup_in_files(fname):
+        self_path_file = Path(__file__)
+        self_path = self_path_file.resolve().parent
+        data_path = self_path.joinpath("files").resolve()
+        path_constructed  = data_path.joinpath(fname)
+        return path_constructed
+    
+    input_file = path_setup_in_files("quad_sphere_no_metadata.yaml")
+    path_1 = path_setup_in_files("quad_sphere_no_metadata_outer.npy")
+    path_2 = path_setup_in_files("quad_sphere_no_metadata_outer.stl")
+    path_3 = path_setup_in_files("quad_sphere_no_metadata_brain.npy")
+    path_4 = path_setup_in_files("quad_sphere_no_metadata_brain.stl")
+
     output_path_list = [path_1,path_2,path_3,path_4] 
     for op in output_path_list:
         if op.is_file():
