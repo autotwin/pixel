@@ -411,6 +411,19 @@ def test_save_stl():
         os.remove(path)  # clean up, remove test file
 
 
+def test_resample_equal_voxel_mask():
+    val = 10
+    array = morphology.ball(val, dtype=bool)
+    scale_ax_0 = 2
+    scale_ax_1 = .5
+    scale_ax_2 = 1
+    array_rescale = mts.resample_equal_voxel_mask(array,scale_ax_0,scale_ax_1,scale_ax_2)
+    assert array_rescale.shape[0] == int(scale_ax_0 * array.shape[0])
+    assert array_rescale.shape[1] == int(scale_ax_1 * array.shape[1])
+    assert array_rescale.shape[2] == int(scale_ax_2 * array.shape[2])
+    assert array_rescale.max() == 1
+    assert array_rescale.min() == 0 
+
 @pytest.mark.skipif(
     ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
     reason="Run on Atlas, eml, and bu.edu machines only.",

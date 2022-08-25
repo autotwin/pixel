@@ -15,3 +15,9 @@ dilation_radius: 1 #future will will overhaul this method
 close_radius: 3 #future will will overhaul this method
 padding_for_stl: 10 #just to make sure the stl is closed even if it intersects with the domain boundaries
 marching_step_size: 1 #input parameter to marching_cubes
+scale_ax_0: 1. #scale of the 0 dimension (future version will read this from NIfTI metadata)
+scale_ax_1: 1. #scale of the 1 dimension (future version will read this from NIfTI metadata)
+scale_ax_2: 1. #scale of the 2 dimension (future version will read this from NIfTI metadata) 
+axis_slice_transverse: 0 #axis that dictates the transverse direction (future version will read this from NIfTI metadata)
+axis_slice_coronal: 1 #axis that dictates the coronal direction (future version will read this from NIfTI metadata)
+axis_slice_sagittal: 2 #axis that dictates the sagittal direction (future version will read this from NIfTI metadata)

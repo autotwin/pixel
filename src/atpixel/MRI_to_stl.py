@@ -12,6 +12,8 @@ import numpy as np
 # import os
 from pathlib import Path
 
+from scipy import ndimage
+
 # import pydicom as dicom
 from shapely.geometry import Point
 
@@ -84,6 +86,14 @@ def alpha_shape_mask_slice(
             mask_2D[jj, kk] = alpha_shape.contains(Point(jj, kk))
     return mask_2D
 
+def resample_equal_voxel_mask(array: Iterable, 
+    scale_ax_0: int,
+    scale_ax_1: int,
+    scale_ax_2: int) -> Iterable:
+    """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask.""" 
+    array_rescale = ndimage.zoom(array,(scale_ax_0,scale_ax_1,scale_ax_2))
+    mask_rescale = array_rescale > 0 
+    return mask_rescale
 
 def alpha_shape_mask_all(array: Iterable, alpha_shape_value: float = 0.0) -> Iterable:
     """Given a 3D image, and value for computing the alpha shape. Will get a mask for each
@@ -138,7 +148,6 @@ def close_mask(array: Iterable, radius: int) -> Iterable:
     closed_array = morphology.binary_closing(array, footprint)
     return closed_array
 
-
 def mask_brain(
     array: Iterable,
     thresh_min: Union[float, int],
@@ -154,6 +163,13 @@ def mask_brain(
     closed_mask = close_mask(dilated_mask, close_radius)
     return closed_mask
 
+# def mask_outer(array:Iterable, close_radius: int) -> Iterable:
+#     """Given a 3D image and specification parameters. Will return the filled mask that will
+#     be used to define the outer skull isosurface."""
+#     thresholded_array = apply_otsu_thresh(array)
+#     mask = select_largest_connected_volume(thresholded_array)
+#     closed_mask = close_mask(mask, close_radius)
+#     return closed_mask
 
 def pad_array(array: Iterable, pad_size: int) -> Iterable:
     """Given an array. Add constant 0 padding on all sides."""
@@ -244,8 +260,15 @@ def _yml_to_dict(*, yml_path_file: Path) -> dict:
             "close_radius",
             "padding_for_stl",
             "marching_step_size",
+            "scale_ax_0",
+            "scale_ax_1",
+            "scale_ax_2",
+            "axis_slice_transverse",
+            "axis_slice_coronal",
+            "axis_slice_sagittal",
         )
-        has_required_keys = all(tuple(map(lambda x: db.get(x), required_keys)))
+
+        has_required_keys = all(tuple(map(lambda x: db.get(x) != None, required_keys)))
         if not has_required_keys:
             raise KeyError(f"Input files must have these keys defined: {required_keys}")
     return db
@@ -316,6 +339,13 @@ def run_and_time_all_code(input_file: Path) -> Iterable:
     padding_for_stl = user_input["padding_for_stl"]
     marching_step_size = user_input["marching_step_size"]
 
+    scale_ax_0 = user_input["scale_ax_0"]
+    scale_ax_1 = user_input["scale_ax_1"]
+    scale_ax_2 = user_input["scale_ax_2"]
+    axis_slice_transverse = user_input["axis_slice_transverse"]
+    axis_slice_coronal = user_input["axis_slice_coronal"]
+    axis_slice_sagittal = user_input["axis_slice_sagittal"]
+
     # begin timing
     time_all.append(time.time())
 
@@ -326,15 +356,18 @@ def run_and_time_all_code(input_file: Path) -> Iterable:
 
     # create the mask that defines the outer surface
     if process_outer:
-        outer_mask = alpha_shape_mask_all(img_array, alpha_shape_param)
+        outer_mask_unscaled = alpha_shape_mask_all(img_array, alpha_shape_param)
+        #outer_mask = mask_outer(img_array,close_radius)
+        outer_mask = resample_equal_voxel_mask(outer_mask_unscaled,scale_ax_0,scale_ax_1,scale_ax_2)
         save_mask(outer_mask, mask_path_file_outer)
     time_all.append(time.time())
 
     # create the mask that defines the brain surface
     if process_brain:
-        brain_mask = mask_brain(
+        brain_mask_unscaled = mask_brain(
             img_array, white_matter_min, white_matter_max, dilation_radius, close_radius
         )
+        brain_mask = resample_equal_voxel_mask(brain_mask_unscaled,scale_ax_0,scale_ax_1,scale_ax_2)
         save_mask(brain_mask, mask_path_file_brain)
     time_all.append(time.time())
 
@@ -356,7 +389,7 @@ def run_and_time_all_code(input_file: Path) -> Iterable:
 
     return time_all
 
-
+  
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input_file", help="the .yml user input file")
