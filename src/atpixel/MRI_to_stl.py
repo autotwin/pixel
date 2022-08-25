@@ -91,8 +91,10 @@ def resample_equal_voxel_mask(array: Iterable,
     scale_ax_1: int,
     scale_ax_2: int) -> Iterable:
     """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask.""" 
-    array_rescale = ndimage.zoom(array,(scale_ax_0,scale_ax_1,scale_ax_2))
-    mask_rescale = array_rescale > 0 
+    array_mult = array * 100.
+    array_rescale = ndimage.zoom(array_mult,(scale_ax_0,scale_ax_1,scale_ax_2),order=1)
+    small_thresh = 0.01
+    mask_rescale = array_rescale > small_thresh # 0 gives errors with precision
     return mask_rescale
 
 def alpha_shape_mask_all(array: Iterable, axis_slice_transverse: int, alpha_shape_value: float = 0.0) -> Iterable:
