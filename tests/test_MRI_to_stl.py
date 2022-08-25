@@ -8,7 +8,8 @@ from skimage.measure import marching_cubes
 import platform
 import pytest
 from stl import mesh
-import sys
+
+# import sys # unused import
 
 # def test_rotate_to_ix0_transverse_axis():
 #     #TODO: write this test!
@@ -30,7 +31,6 @@ def test_compute_otsu_thresh():
 
 def test_compute_otsu_thresh_robust():
     dim = 100
-    dim = 100
     known_lower = 10
     known_upper = 100
     std_lower = 2
@@ -47,7 +47,8 @@ def test_compute_otsu_thresh_robust():
 
 
 def test_apply_otsu_thresh():
-    array = np.random.random((100, 100, 100))
+    size = 100
+    array = np.random.random((size, size, size))
     thresh = threshold_otsu(array)
     known = array > thresh
     found = mts.apply_otsu_thresh(array)
@@ -55,7 +56,6 @@ def test_apply_otsu_thresh():
 
 
 def test_apply_otsu_thresh_robust():
-    dim = 100
     dim = 100
     known_lower = 10
     known_upper = 10000
@@ -128,7 +128,7 @@ def test_alpha_shape_mask_all():
     array_1[val * 7 : val * 9, val * 7 : val * 9, val * 7 : val * 9] = little_shape
     thresh = 0.5
     alpha_shape_value = 0.0
-    axis_slice_transverse = 0 
+    axis_slice_transverse = 0
     known = array_2 > thresh
     found = mts.alpha_shape_mask_all(array_1, axis_slice_transverse, alpha_shape_value)
     assert np.all(known == found)
@@ -357,7 +357,9 @@ def test_when_io_fails():
 
 
 @pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+    ("atlas" not in platform.uname().node)
+    and ("bu.edu" not in platform.uname().node)
+    and ("eml" not in platform.uname().node),
     reason="Run on Atlas, eml, and bu.edu machines only.",
 )
 def test_string_to_path():
@@ -366,11 +368,13 @@ def test_string_to_path():
     found = mts.string_to_path(path_string_1)
     assert known == found
 
+
 def test_path_to_string():
     path_1 = Path(__file__)
     known = str(path_1)
     found = mts.path_to_string(path_1)
     assert known == found
+
 
 def test_string_to_boolean():
     # assert False == mts.string_to_boolean("False")
@@ -380,7 +384,9 @@ def test_string_to_boolean():
 
 
 @pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+    ("atlas" not in platform.uname().node)
+    and ("bu.edu" not in platform.uname().node)
+    and ("eml" not in platform.uname().node),
     reason="Run on Atlas, eml, and bu.edu machines only.",
 )
 def test_save_mask():
@@ -395,7 +401,9 @@ def test_save_mask():
 
 
 @pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+    ("atlas" not in platform.uname().node)
+    and ("bu.edu" not in platform.uname().node)
+    and ("eml" not in platform.uname().node),
     reason="Run on Atlas, eml, and bu.edu machines only.",
 )
 def test_save_stl():
@@ -416,19 +424,22 @@ def test_resample_equal_voxel_mask():
     val = 10
     array = morphology.ball(val, dtype=bool)
     scale_ax_0 = 2
-    scale_ax_1 = .5
+    scale_ax_1 = 0.5
     scale_ax_2 = 1
-    array_rescale = mts.resample_equal_voxel_mask(array,scale_ax_0,scale_ax_1,scale_ax_2)
+    array_rescale = mts.resample_equal_voxel_mask(
+        array, scale_ax_0, scale_ax_1, scale_ax_2
+    )
     assert array_rescale.shape[0] == int(scale_ax_0 * array.shape[0])
     assert array_rescale.shape[1] == int(scale_ax_1 * array.shape[1])
     assert array_rescale.shape[2] == int(scale_ax_2 * array.shape[2])
     assert array_rescale.max() == 1
-    assert array_rescale.min() == 0 
+    assert array_rescale.min() == 0
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_run_and_time_all_code():
     def path_setup_in_files(fname):
         self_path_file = Path(__file__)
@@ -449,6 +460,7 @@ def test_run_and_time_all_code():
             os.remove(op)
 
     time_all = mts.run_and_time_all_code(input_file)
-    assert len(time_all) == 7
+    n_timing_steps = 7  # semantic clarity, avoid magic numbers
+    assert len(time_all) == n_timing_steps
     for op in output_path_list:
         assert op.is_file()
