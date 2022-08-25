@@ -436,6 +436,7 @@ def test_resample_equal_voxel_mask():
     assert array_rescale.min() == 0
 
 
+# try to get this test running on CI with variations on io path
 # @pytest.mark.skipif(
 #     ("atlas" not in platform.uname().node) and ("bu.edu" not in platform.uname().node) and ("eml" not in platform.uname().node),
 #     reason="Run on Atlas, eml, and bu.edu machines only.",
