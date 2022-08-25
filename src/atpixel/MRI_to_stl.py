@@ -27,7 +27,7 @@ from stl import mesh
 
 # import sys
 import time
-from typing import Iterable, Union
+from typing import Iterable, Union, List
 import yaml
 
 # def re_scale_MRI_intensity(array: Iterable) -> Iterable:
@@ -86,16 +86,19 @@ def alpha_shape_mask_slice(
             mask_2D[jj, kk] = alpha_shape.contains(Point(jj, kk))
     return mask_2D
 
-def resample_equal_voxel_mask(array: Iterable, 
-    scale_ax_0: int,
-    scale_ax_1: int,
-    scale_ax_2: int) -> Iterable:
-    """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask.""" 
-    array_rescale = ndimage.zoom(array,(scale_ax_0,scale_ax_1,scale_ax_2))
-    mask_rescale = array_rescale > 0 
+
+def resample_equal_voxel_mask(
+    array: Iterable, scale_ax_0: int, scale_ax_1: int, scale_ax_2: int
+) -> Iterable:
+    """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask."""
+    array_rescale = ndimage.zoom(array, (scale_ax_0, scale_ax_1, scale_ax_2))
+    mask_rescale = array_rescale > 0
     return mask_rescale
 
-def alpha_shape_mask_all(array: Iterable, axis_slice_transverse: int, alpha_shape_value: float = 0.0) -> Iterable:
+
+def alpha_shape_mask_all(
+    array: Iterable, axis_slice_transverse: int, alpha_shape_value: float = 0.0
+) -> Iterable:
     """Given a 3D image, and value for computing the alpha shape. Will get a mask for each
     2D transverse slice based on the alpha shape, and then concatenate all of the 2D masks
     into a 3D mask that will be used to define the outer surface of the scan."""
@@ -117,7 +120,7 @@ def alpha_shape_mask_all(array: Iterable, axis_slice_transverse: int, alpha_shap
             mask_3D[:, kk, :] = mask_2D
         elif axis_slice_transverse == 2:
             mask_3D[:, :, kk] = mask_2D
-        
+
     return mask_3D
 
 
@@ -161,6 +164,7 @@ def close_mask(array: Iterable, radius: int) -> Iterable:
     closed_array = morphology.binary_closing(array, footprint)
     return closed_array
 
+
 def mask_brain(
     array: Iterable,
     thresh_min: Union[float, int],
@@ -176,6 +180,7 @@ def mask_brain(
     closed_mask = close_mask(dilated_mask, close_radius)
     return closed_mask
 
+
 # def mask_outer(array:Iterable, close_radius: int) -> Iterable:
 #     """Given a 3D image and specification parameters. Will return the filled mask that will
 #     be used to define the outer skull isosurface."""
@@ -183,6 +188,7 @@ def mask_brain(
 #     mask = select_largest_connected_volume(thresholded_array)
 #     closed_mask = close_mask(mask, close_radius)
 #     return closed_mask
+
 
 def pad_array(array: Iterable, pad_size: int) -> Iterable:
     """Given an array. Add constant 0 padding on all sides."""
@@ -224,10 +230,10 @@ def _yml_to_dict(*, yml_path_file: Path) -> dict:
     # on comparison of two strings that are both are converted
     # using the casefold() method.
     atpixel: str = "atpixel>"
-    
+
     if not yml_path_file.is_file():
         raise FileNotFoundError(f"{atpixel} File not found: {str(yml_path_file)}")
-    
+
     file_type = yml_path_file.suffix.casefold()
 
     supported_types = (".yaml", ".yml")
@@ -320,7 +326,7 @@ def save_stl(mesh: mesh.Mesh.dtype, file_name: Path) -> None:
     return
 
 
-def run_and_time_all_code(input_file: Path) -> Iterable:
+def run_and_time_all_code(input_file: Path) -> List[float]:
     """Runs every step of the pipeline and returns a list of timing for each step.
     The optional argument is only used during de-bugging b/c this is the slowest step."""
     time_all = []
@@ -363,15 +369,20 @@ def run_and_time_all_code(input_file: Path) -> Iterable:
     time_all.append(time.time())
 
     # import the NIfTI file as an array
-    if has_metadata == False:
+    # if has_metadata == False:
+    if has_metadata is False:
         img_array = ntn.NIfTI_to_numpy(nii_path_file)
     time_all.append(time.time())
 
     # create the mask that defines the outer surface
     if process_outer:
-        outer_mask_unscaled = alpha_shape_mask_all(img_array, axis_slice_transverse, alpha_shape_param)
-        #outer_mask = mask_outer(img_array,close_radius)
-        outer_mask = resample_equal_voxel_mask(outer_mask_unscaled,scale_ax_0,scale_ax_1,scale_ax_2)
+        outer_mask_unscaled = alpha_shape_mask_all(
+            img_array, axis_slice_transverse, alpha_shape_param
+        )
+        # outer_mask = mask_outer(img_array,close_radius)
+        outer_mask = resample_equal_voxel_mask(
+            outer_mask_unscaled, scale_ax_0, scale_ax_1, scale_ax_2
+        )
         save_mask(outer_mask, mask_path_file_outer)
     time_all.append(time.time())
 
@@ -380,7 +391,9 @@ def run_and_time_all_code(input_file: Path) -> Iterable:
         brain_mask_unscaled = mask_brain(
             img_array, white_matter_min, white_matter_max, dilation_radius, close_radius
         )
-        brain_mask = resample_equal_voxel_mask(brain_mask_unscaled,scale_ax_0,scale_ax_1,scale_ax_2)
+        brain_mask = resample_equal_voxel_mask(
+            brain_mask_unscaled, scale_ax_0, scale_ax_1, scale_ax_2
+        )
         save_mask(brain_mask, mask_path_file_brain)
     time_all.append(time.time())
 
@@ -402,7 +415,7 @@ def run_and_time_all_code(input_file: Path) -> Iterable:
 
     return time_all
 
-  
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input_file", help="the .yml user input file")
