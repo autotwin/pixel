@@ -86,15 +86,17 @@ def alpha_shape_mask_slice(
             mask_2D[jj, kk] = alpha_shape.contains(Point(jj, kk))
     return mask_2D
 
-def resample_equal_voxel_mask(array: Iterable, 
-    scale_ax_0: int,
-    scale_ax_1: int,
-    scale_ax_2: int) -> Iterable:
-    """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask.""" 
-    array_mult = array * 100.
-    array_rescale = ndimage.zoom(array_mult,(scale_ax_0,scale_ax_1,scale_ax_2),order=1)
+
+def resample_equal_voxel_mask(
+    array: Iterable, scale_ax_0: int, scale_ax_1: int, scale_ax_2: int
+) -> Iterable:
+    """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask."""
+    array_mult = array * 100.0
+    array_rescale = ndimage.zoom(
+        array_mult, (scale_ax_0, scale_ax_1, scale_ax_2), order=1
+    )
     small_thresh = 0.01
-    mask_rescale = array_rescale > small_thresh # 0 gives errors with precision
+    mask_rescale = array_rescale > small_thresh  # 0 gives errors with precision
     return mask_rescale
 
 
@@ -263,7 +265,7 @@ def _yml_to_dict(*, yml_path_file: Path) -> dict:
             f"Version mismatch: specified was {version_specified}, implemented is {version_implemented}"
         )
     else:
-        # manadating that files read in have at least these five keys
+        # require that input file has at least the following keys:
         required_keys = (
             "version",
             "nii_path_file",
