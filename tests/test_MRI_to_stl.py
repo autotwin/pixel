@@ -128,8 +128,9 @@ def test_alpha_shape_mask_all():
     array_1[val * 7 : val * 9, val * 7 : val * 9, val * 7 : val * 9] = little_shape
     thresh = 0.5
     alpha_shape_value = 0.0
+    axis_slice_transverse = 0 
     known = array_2 > thresh
-    found = mts.alpha_shape_mask_all(array_1, alpha_shape_value)
+    found = mts.alpha_shape_mask_all(array_1, axis_slice_transverse, alpha_shape_value)
     assert np.all(known == found)
 
 

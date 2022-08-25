@@ -95,16 +95,29 @@ def resample_equal_voxel_mask(array: Iterable,
     mask_rescale = array_rescale > 0 
     return mask_rescale
 
-def alpha_shape_mask_all(array: Iterable, alpha_shape_value: float = 0.0) -> Iterable:
+def alpha_shape_mask_all(array: Iterable, axis_slice_transverse: int, alpha_shape_value: float = 0.0) -> Iterable:
     """Given a 3D image, and value for computing the alpha shape. Will get a mask for each
     2D transverse slice based on the alpha shape, and then concatenate all of the 2D masks
     into a 3D mask that will be used to define the outer surface of the scan."""
     mask_3D = np.zeros(array.shape)
     thresh = compute_otsu_thresh(array)
     for kk in range(0, mask_3D.shape[0]):
-        array_2D = array[kk, :, :]
+        if axis_slice_transverse == 0:
+            array_2D = array[kk, :, :]
+        elif axis_slice_transverse == 1:
+            array_2D = array[:, kk, :]
+        elif axis_slice_transverse == 2:
+            array_2D = array[:, :, kk]
+
         mask_2D = alpha_shape_mask_slice(array_2D, thresh, alpha_shape_value)
-        mask_3D[kk, :, :] = mask_2D
+
+        if axis_slice_transverse == 0:
+            mask_3D[kk, :, :] = mask_2D
+        elif axis_slice_transverse == 1:
+            mask_3D[:, kk, :] = mask_2D
+        elif axis_slice_transverse == 2:
+            mask_3D[:, :, kk] = mask_2D
+        
     return mask_3D
 
 
@@ -356,7 +369,7 @@ def run_and_time_all_code(input_file: Path) -> Iterable:
 
     # create the mask that defines the outer surface
     if process_outer:
-        outer_mask_unscaled = alpha_shape_mask_all(img_array, alpha_shape_param)
+        outer_mask_unscaled = alpha_shape_mask_all(img_array, axis_slice_transverse, alpha_shape_param)
         #outer_mask = mask_outer(img_array,close_radius)
         outer_mask = resample_equal_voxel_mask(outer_mask_unscaled,scale_ax_0,scale_ax_1,scale_ax_2)
         save_mask(outer_mask, mask_path_file_outer)
