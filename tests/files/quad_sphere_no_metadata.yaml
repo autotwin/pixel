@@ -5,6 +5,7 @@ mask_path_file_outer: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_oute
 stl_path_file_outer: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl"
 mask_path_file_brain: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.npy"
 stl_path_file_brain: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.stl"
+visualization_folder_name: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
 has_metadata: 'False'
 process_outer: 'True'
 process_brain: 'True' 
