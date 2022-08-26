@@ -271,6 +271,7 @@ def _yml_to_dict(*, yml_path_file: Path) -> dict:
             "stl_path_file_outer",
             "mask_path_file_brain",
             "stl_path_file_brain",
+            "visualization_folder_name",
             "has_metadata",
             "process_outer",
             "process_brain",
@@ -369,8 +370,8 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     scale_ax_1 = user_input["scale_ax_1"]
     scale_ax_2 = user_input["scale_ax_2"]
     axis_slice_transverse = user_input["axis_slice_transverse"]
-    axis_slice_coronal = user_input["axis_slice_coronal"]
-    axis_slice_sagittal = user_input["axis_slice_sagittal"]
+    #axis_slice_coronal = user_input["axis_slice_coronal"]
+    #axis_slice_sagittal = user_input["axis_slice_sagittal"]
 
     # begin timing
     time_all.append(time.time())
