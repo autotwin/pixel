@@ -27,4 +27,7 @@ Example of creating multiple isosurfaces from the T1 Utah SCI image:
 
 Example of high throughput automated analysis of T1 MRIs from the IXI dataset: 
 
-![grid of example head isosurface](https://github.com/autotwin/data/blob/main/figs/example_grid.png) 
+<p align="center">
+  <img src="https://github.com/autotwin/data/blob/main/figs/example_grid.png" alt="grid of example head isosurface"/>
+</p>
+
