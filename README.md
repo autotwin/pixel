@@ -17,7 +17,7 @@ See [config/README.md](config/README.md)
 
 To come.
 
-## Visualizations
+## Visualizations of work in progress
 
 Example of creating multiple isosurfaces from the T1 Utah SCI image: 
 
