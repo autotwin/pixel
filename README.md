@@ -17,5 +17,6 @@ See [config/README.md](config/README.md)
 
 To come.
 
+## Visualizations
 
 ![animated skull and brain isosurface](https://github.com/autotwin/data/blob/main/figs/skull_brain_animation.gif) 
