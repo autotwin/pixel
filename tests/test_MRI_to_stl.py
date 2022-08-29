@@ -112,7 +112,6 @@ def test_alpha_shape_mask_slice():
 
 @pytest.mark.skip("work in progress")
 def test_alpha_shape_mask_slice_concave():
-    aa = 44
     assert True
 
 
@@ -136,7 +135,6 @@ def test_alpha_shape_mask_all():
 
 @pytest.mark.skip("work in progress")
 def test_alpha_shape_mask_all_concave():
-    aa = 44
     assert True
 
 
@@ -225,7 +223,6 @@ def test_mask_brain():
 def test_mask_brain_robust():
     # broke down mask_brain into smaller chunks where test was feasible
     # test for whole thing all at once = ?
-    aa = 44
     assert True
 
 
@@ -291,6 +288,7 @@ def test_mask_to_mesh_for_stl():
     assert np.all(mesh_for_stl_known.points == mesh_for_stl_found.points) and np.all(
         mesh_for_stl_known.vectors == mesh_for_stl_found.vectors
     )
+
 
 def test_yml_to_dict():
     self_path_file = Path(__file__)

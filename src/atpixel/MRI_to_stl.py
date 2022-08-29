@@ -88,7 +88,10 @@ def alpha_shape_mask_slice(
 
 
 def resample_equal_voxel_mask(
-    array: np.ndarray, scale_ax_0: Union[float, int], scale_ax_1: Union[float, int], scale_ax_2: Union[float, int]
+    array: np.ndarray,
+    scale_ax_0: Union[float, int],
+    scale_ax_1: Union[float, int],
+    scale_ax_2: Union[float, int],
 ) -> np.ndarray:
     """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask."""
     array_mult = array * 100.0
@@ -372,8 +375,8 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     scale_ax_1 = user_input["scale_ax_1"]
     scale_ax_2 = user_input["scale_ax_2"]
     axis_slice_transverse = user_input["axis_slice_transverse"]
-    #axis_slice_coronal = user_input["axis_slice_coronal"]
-    #axis_slice_sagittal = user_input["axis_slice_sagittal"]
+    # axis_slice_coronal = user_input["axis_slice_coronal"]
+    # axis_slice_sagittal = user_input["axis_slice_sagittal"]
 
     # begin timing
     time_all.append(time.time())
