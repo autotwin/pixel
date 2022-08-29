@@ -88,7 +88,7 @@ def alpha_shape_mask_slice(
 
 
 def resample_equal_voxel_mask(
-    array: Iterable, scale_ax_0: int, scale_ax_1: int, scale_ax_2: int
+    array: Iterable, scale_ax_0: Union[float,int], scale_ax_1: Union[float,int], scale_ax_2: Union[float,int]
 ) -> Iterable:
     """Given a 3D mask and specified scaling of each axis. Will return the re-scaled mask."""
     array_mult = array * 100.0
