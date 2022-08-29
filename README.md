@@ -20,10 +20,10 @@ To come.
 ## Visualizations of work in progress
 
 Example of creating multiple isosurfaces from the T1 Utah SCI image: 
-
 <p align="center">
-  <img src="https://github.com/autotwin/data/blob/main/figs/skull_brain_animation.gif" alt="animated skull and brain isosurface"/>
+  <img src="../data/figs/skull_brain_animation.gif" alt="animated skull and brain isosurface"/>
 </p>
+
 
 
 Example of high throughput automated analysis of T1 MRIs from the IXI dataset: 
