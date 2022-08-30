@@ -329,12 +329,8 @@ def save_mask(mask: np.ndarray, mask_path_file: Path) -> None:
     """Given a mask numpy array and file name will save mask in the
     mask folder.
     """
-    # xx  Returns the expanded path of the saved file as
-    # xx a string.
-    # xx """
     mask_path_string = path_to_string(mask_path_file)
     np.save(mask_path_string, mask)
-    # return mask_path_string
     return
 
 
