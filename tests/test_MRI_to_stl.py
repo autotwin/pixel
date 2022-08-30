@@ -8,6 +8,7 @@ from skimage.measure import marching_cubes
 import platform
 import pytest
 from stl import mesh
+from typing import Final
 
 # import sys # unused import
 
@@ -353,6 +354,21 @@ def test_when_io_fails():
     assert error.typename == "OSError"
 
 
+def local_platform() -> bool:
+    """Tests if the current thread is on a local platform.
+    Local platforms are defined by a string contained in this
+    function.  Returns True if the platform name matches one of the
+    known local platform patterns, False otherwise.
+    """
+    local_platform_substrings: Final = ("atlas", "bu.edu", "eml")
+    thread_node = platform.uname().node
+    # if thread_node in local_platform_substrings:
+    if any(x in thread_node for x in local_platform_substrings):
+        return True
+    else:
+        return False
+
+
 # @pytest.mark.skipif(
 #     ("atlas" not in platform.uname().node)
 #     and ("bu.edu" not in platform.uname().node)
@@ -363,7 +379,11 @@ def test_string_to_path():
     known = Path(__file__)
     path_string_1 = "~/autotwin/pixel/tests/test_MRI_to_stl.py"
     found = mts.string_to_path(path_string_1)
-    assert known == found
+
+    if local_platform():
+        # Enforce this test only for local machines, the CI runner
+        # machines won't pass this test.
+        assert known == found
 
     assert isinstance(found, Path)
 
