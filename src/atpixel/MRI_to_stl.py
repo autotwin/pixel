@@ -30,24 +30,24 @@ import time
 from typing import Iterable, Union, List
 import yaml
 
-# def re_scale_MRI_intensity(array: Iterable) -> Iterable:
+# def re_scale_MRI_intensity(array: np.ndarray) -> np.ndarray:
 #     """Given a 3D brain MRI array. Will re-scale intensity to enable white matter segment.
 #     TODO: Write this function!."""
 #     return array
 
-# def rotate_to_ix0_transverse_axis(array: Iterable) -> Iterable:
+# def rotate_to_ix0_transverse_axis(array: np.ndarray) -> np.ndarray:
 #     """Given a 3D brain MRI array. Will rotate it so the transverse axis is ix0.
 #     TODO: Write this function!."""
 #     return array
 
 
-def compute_otsu_thresh(array: Iterable) -> Union[float, int]:
+def compute_otsu_thresh(array: np.ndarray) -> Union[float, int]:
     """Given a value numpy array. Will return the otsu threshold value."""
     thresh = threshold_otsu(array)
     return thresh
 
 
-def apply_otsu_thresh(array: Iterable) -> Iterable:
+def apply_otsu_thresh(array: np.ndarray) -> np.ndarray:
     """Given a value numpy array. Will return a boolean numpy array with an otsu threshold
     applied."""
     thresh = compute_otsu_thresh(array)
@@ -55,7 +55,7 @@ def apply_otsu_thresh(array: Iterable) -> Iterable:
     return thresh_img
 
 
-def contour_points_slice(array_2D: Iterable, thresh: Union[float, int]) -> Iterable:
+def contour_points_slice(array_2D: np.ndarray, thresh: Union[float, int]) -> np.ndarray:
     """Given a 2D image and a threshold. Will return all points that form contours at this
     threshold value.
     NOTE: this function will work for slices in any direction, but for the next step to work
@@ -71,8 +71,8 @@ def contour_points_slice(array_2D: Iterable, thresh: Union[float, int]) -> Itera
 
 
 def alpha_shape_mask_slice(
-    array_2D: Iterable, thresh: Union[float, int], alpha_shape_value: float = 0.0
-) -> Iterable:
+    array_2D: np.ndarray, thresh: Union[float, int], alpha_shape_value: float = 0.0
+) -> np.ndarray:
     """Given a 2D image, a threshold, and value for computing the alpha shape.
     Will compute the alpha shape for each 2D image, turn that into a 2D mask.
     NOTE: this function will work for slices in any direction, but for best results
