@@ -407,8 +407,16 @@ def test_save_mask():
     path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
     path = mts.string_to_path(path_string_1)
     mask = morphology.ball(10, dtype=bool)
-    mts.save_mask(mask, path)
-    file_exists = path.is_file()
+    return_value = mts.save_mask(mask, path)
+
+    if local_platform():
+        # Enforce this part of the test only for local machines; the
+        # CI runner machines won't pass this test because of their
+        # code isolation strategies.
+        file_exists = path.is_file()
+    else:
+        file_exists = Path(return_value).is_file()
+
     assert file_exists  # assert test file was written
     if file_exists:
         os.remove(path)  # clean up, remove test file

@@ -325,11 +325,14 @@ def string_to_boolean(val: str) -> bool:
     return val_boolean
 
 
-def save_mask(mask: Iterable, mask_path_file: Path) -> None:
-    """Given a mask numpy array and file name will save mask in the mask folder."""
+def save_mask(mask: np.ndarray, mask_path_file: Path) -> str:
+    """Given a mask numpy array and file name will save mask in the
+    mask folder.  Returns the expanded path of the saved file as
+    a string.
+    """
     mask_path_string = path_to_string(mask_path_file)
     np.save(mask_path_string, mask)
-    return
+    return mask_path_string
 
 
 def save_stl(mesh: mesh.Mesh.dtype, file_name: Path) -> None:
