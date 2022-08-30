@@ -369,20 +369,15 @@ def local_platform() -> bool:
         return False
 
 
-# @pytest.mark.skipif(
-#     ("atlas" not in platform.uname().node)
-#     and ("bu.edu" not in platform.uname().node)
-#     and ("eml" not in platform.uname().node),
-#     reason="Run on Atlas, eml, and bu.edu machines only.",
-# )
 def test_string_to_path():
     known = Path(__file__)
     path_string_1 = "~/autotwin/pixel/tests/test_MRI_to_stl.py"
     found = mts.string_to_path(path_string_1)
 
     if local_platform():
-        # Enforce this test only for local machines, the CI runner
-        # machines won't pass this test.
+        # Enforce this part of the test only for local machines; the
+        # CI runner machines won't pass this test because of their
+        # code isolation strategies.
         assert known == found
 
     assert isinstance(found, Path)
@@ -402,12 +397,12 @@ def test_string_to_boolean():
     assert mts.string_to_boolean("True")
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_save_mask():
     path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
     path = mts.string_to_path(path_string_1)
