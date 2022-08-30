@@ -219,8 +219,8 @@ def faces_verts_to_mesh_object(verts: Iterable, faces: Iterable) -> mesh.Mesh.dt
 
 
 def mask_to_mesh_for_stl(
-    mask: Iterable, marching_step_size: int, pad_size: int = 10
-) -> mesh.Mesh.dtype:
+    mask: np.ndarray, marching_step_size: int, pad_size: int = 10
+) -> mesh.Mesh:
     """Given a mask array. Converts the mask array into a stl mesh object."""
     padded_mask = pad_array(mask, pad_size)
     verts, faces = padded_mask_to_verts_faces(padded_mask, marching_step_size)
@@ -325,17 +325,20 @@ def string_to_boolean(val: str) -> bool:
     return val_boolean
 
 
-def save_mask(mask: np.ndarray, mask_path_file: Path) -> str:
+def save_mask(mask: np.ndarray, mask_path_file: Path) -> None:
     """Given a mask numpy array and file name will save mask in the
-    mask folder.  Returns the expanded path of the saved file as
-    a string.
+    mask folder.
     """
+    # xx  Returns the expanded path of the saved file as
+    # xx a string.
+    # xx """
     mask_path_string = path_to_string(mask_path_file)
     np.save(mask_path_string, mask)
-    return mask_path_string
+    # return mask_path_string
+    return
 
 
-def save_stl(mesh: mesh.Mesh.dtype, file_name: Path) -> None:
+def save_stl(mesh: mesh.Mesh, file_name: Path) -> None:
     """Given a stl formatted mesh will save information in the stl."""
     file_name_str = path_to_string(file_name)
     mesh.save(file_name_str)

@@ -405,8 +405,8 @@ def test_string_to_boolean():
 # )
 def test_save_mask():
     this_path = Path(__file__).parent
-
     this_path_file = this_path.joinpath("test_save_mask_987311.npy")
+    # formerly:
     # path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
     # path_string_1 = str(this_path_file)
 
@@ -414,16 +414,9 @@ def test_save_mask():
     mask = morphology.ball(10, dtype=bool)
     # return_value = mts.save_mask(mask, path)
     # return_value = mts.save_mask(mask, this_path_file)
-    _ = mts.save_mask(mask, this_path_file)
+    # _ = mts.save_mask(mask, this_path_file)
+    mts.save_mask(mask, this_path_file)
 
-    # if local_platform():
-    #     # Enforce this part of the test only for local machines; the
-    #     # CI runner machines won't pass this test because of their
-    #     # code isolation strategies.
-    #     file_exists = this_path_file.is_file()
-    # else:
-    #     file_exists = Path(return_value).is_file()
-    
     file_exists = this_path_file.is_file()
 
     assert file_exists  # assert test file was written
@@ -431,24 +424,33 @@ def test_save_mask():
         os.remove(this_path_file)  # clean up, remove test file
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_save_stl():
-    path_string_1 = "~/autotwin/pixel/tests/test_save_stl_987311.stl"
-    path = mts.string_to_path(path_string_1)
+    this_path = Path(__file__).parent
+    this_path_file = this_path.joinpath("test_save_mask_987311.stl")
+    # formerly
+    # path_string_1 = "~/autotwin/pixel/tests/test_save_stl_987311.stl"
+    # path = mts.string_to_path(path_string_1)
+
     mask = morphology.ball(10, dtype=bool)
     marching_step_size = 1
     pad_size = 10
     mesh = mts.mask_to_mesh_for_stl(mask, marching_step_size, pad_size)
-    mts.save_stl(mesh, path)
-    file_exists = path.is_file()
+
+    # mts.save_stl(mesh, path)
+    mts.save_stl(mesh, this_path_file)
+
+    # file_exists = path.is_file()
+    file_exists = this_path_file.is_file()
     assert file_exists  # assert test file was written
     if file_exists:
-        os.remove(path)  # clean up, remove test file
+        # os.remove(path)  # clean up, remove test file
+        os.remove(this_path_file)  # clean up, remove test file
 
 
 def test_resample_equal_voxel_mask():
