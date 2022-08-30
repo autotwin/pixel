@@ -353,17 +353,19 @@ def test_when_io_fails():
     assert error.typename == "OSError"
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_string_to_path():
     known = Path(__file__)
     path_string_1 = "~/autotwin/pixel/tests/test_MRI_to_stl.py"
     found = mts.string_to_path(path_string_1)
     assert known == found
+
+    assert isinstance(found, Path)
 
 
 def test_path_to_string():
