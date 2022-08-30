@@ -397,24 +397,11 @@ def test_string_to_boolean():
     assert mts.string_to_boolean("True")
 
 
-# @pytest.mark.skipif(
-#     ("atlas" not in platform.uname().node)
-#     and ("bu.edu" not in platform.uname().node)
-#     and ("eml" not in platform.uname().node),
-#     reason="Run on Atlas, eml, and bu.edu machines only.",
-# )
 def test_save_mask():
     this_path = Path(__file__).parent
     this_path_file = this_path.joinpath("test_save_mask_987311.npy")
-    # formerly:
-    # path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
-    # path_string_1 = str(this_path_file)
 
-    # path = mts.string_to_path(path_string_1)
     mask = morphology.ball(10, dtype=bool)
-    # return_value = mts.save_mask(mask, path)
-    # return_value = mts.save_mask(mask, this_path_file)
-    # _ = mts.save_mask(mask, this_path_file)
     mts.save_mask(mask, this_path_file)
 
     file_exists = this_path_file.is_file()
@@ -424,32 +411,20 @@ def test_save_mask():
         os.remove(this_path_file)  # clean up, remove test file
 
 
-# @pytest.mark.skipif(
-#     ("atlas" not in platform.uname().node)
-#     and ("bu.edu" not in platform.uname().node)
-#     and ("eml" not in platform.uname().node),
-#     reason="Run on Atlas, eml, and bu.edu machines only.",
-# )
 def test_save_stl():
     this_path = Path(__file__).parent
     this_path_file = this_path.joinpath("test_save_mask_987311.stl")
-    # formerly
-    # path_string_1 = "~/autotwin/pixel/tests/test_save_stl_987311.stl"
-    # path = mts.string_to_path(path_string_1)
 
     mask = morphology.ball(10, dtype=bool)
     marching_step_size = 1
     pad_size = 10
     mesh = mts.mask_to_mesh_for_stl(mask, marching_step_size, pad_size)
 
-    # mts.save_stl(mesh, path)
     mts.save_stl(mesh, this_path_file)
 
-    # file_exists = path.is_file()
     file_exists = this_path_file.is_file()
     assert file_exists  # assert test file was written
     if file_exists:
-        # os.remove(path)  # clean up, remove test file
         os.remove(this_path_file)  # clean up, remove test file
 
 
@@ -470,12 +445,12 @@ def test_resample_equal_voxel_mask():
 
 
 # try to get this test running on CI with variations on io path
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_run_and_time_all_code():
     def path_setup_in_files(fname):
         self_path_file = Path(__file__)
@@ -491,12 +466,13 @@ def test_run_and_time_all_code():
     path_4 = path_setup_in_files("quad_sphere_no_metadata_brain.stl")
 
     output_path_list = [path_1, path_2, path_3, path_4]
-    for op in output_path_list:
-        if op.is_file():
-            os.remove(op)
+    # for op in output_path_list:
+    #     if op.is_file():
+    #         os.remove(op)
 
     time_all = mts.run_and_time_all_code(input_file)
     n_timing_steps = 7  # semantic clarity, avoid magic numbers
     assert len(time_all) == n_timing_steps
     for op in output_path_list:
         assert op.is_file()
+        os.remove(op)  # clean up
