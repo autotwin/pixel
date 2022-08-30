@@ -413,15 +413,18 @@ def test_save_mask():
     # path = mts.string_to_path(path_string_1)
     mask = morphology.ball(10, dtype=bool)
     # return_value = mts.save_mask(mask, path)
-    return_value = mts.save_mask(mask, this_path_file)
+    # return_value = mts.save_mask(mask, this_path_file)
+    _ = mts.save_mask(mask, this_path_file)
 
-    if local_platform():
-        # Enforce this part of the test only for local machines; the
-        # CI runner machines won't pass this test because of their
-        # code isolation strategies.
-        file_exists = this_path_file.is_file()
-    else:
-        file_exists = Path(return_value).is_file()
+    # if local_platform():
+    #     # Enforce this part of the test only for local machines; the
+    #     # CI runner machines won't pass this test because of their
+    #     # code isolation strategies.
+    #     file_exists = this_path_file.is_file()
+    # else:
+    #     file_exists = Path(return_value).is_file()
+    
+    file_exists = this_path_file.is_file()
 
     assert file_exists  # assert test file was written
     if file_exists:
