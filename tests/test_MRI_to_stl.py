@@ -404,22 +404,28 @@ def test_string_to_boolean():
 #     reason="Run on Atlas, eml, and bu.edu machines only.",
 # )
 def test_save_mask():
-    path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
-    path = mts.string_to_path(path_string_1)
+    this_path = Path(__file__).parent
+
+    this_path_file = this_path.joinpath("test_save_mask_987311.npy")
+    # path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
+    # path_string_1 = str(this_path_file)
+
+    # path = mts.string_to_path(path_string_1)
     mask = morphology.ball(10, dtype=bool)
-    return_value = mts.save_mask(mask, path)
+    # return_value = mts.save_mask(mask, path)
+    return_value = mts.save_mask(mask, this_path_file)
 
     if local_platform():
         # Enforce this part of the test only for local machines; the
         # CI runner machines won't pass this test because of their
         # code isolation strategies.
-        file_exists = path.is_file()
+        file_exists = this_path_file.is_file()
     else:
         file_exists = Path(return_value).is_file()
 
     assert file_exists  # assert test file was written
     if file_exists:
-        os.remove(path)  # clean up, remove test file
+        os.remove(this_path_file)  # clean up, remove test file
 
 
 @pytest.mark.skipif(
