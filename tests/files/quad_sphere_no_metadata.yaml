@@ -1,12 +1,21 @@
 # User input to accompany small_sphere_no_metadata.nii
 version: 1.1
 
-nii_path_file: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata.nii
-mask_path_file_outer: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.npy
-stl_path_file_outer: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl
-mask_path_file_brain: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.npy
-stl_path_file_brain: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.stl
-visualization_folder_name: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations
+# nii_path_file: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata.nii
+# mask_path_file_outer: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.npy
+# stl_path_file_outer: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl
+# mask_path_file_brain: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.npy
+# stl_path_file_brain: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.stl
+# visualization_folder_name: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations
+#
+# try relative pathing (relative to the location of this .yml file)
+nii_path_file: quad_sphere_no_metadata.nii
+mask_path_file_outer: quad_sphere_no_metadata_outer.npy
+stl_path_file_outer: quad_sphere_no_metadata_outer.stl
+mask_path_file_brain: quad_sphere_no_metadata_brain.npy
+stl_path_file_brain: quad_sphere_no_metadata_brain.stl
+visualization_folder_name: quad_sphere_no_metadata_visualizations
+# visualization_folder_name: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations
 
 has_metadata: false
 process_outer: true

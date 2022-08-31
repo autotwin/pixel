@@ -343,6 +343,14 @@ def save_stl(mesh: mesh.Mesh, file_name: Path) -> None:
     return
 
 
+def path_to_test_files() -> Path:
+    """Locates the autotwin/pixel/tests/files/ folder relative to this
+    current file.
+    """
+    files_path = Path(__file__).parent.joinpath("../../tests/files").resolve()
+    return files_path
+
+
 def run_and_time_all_code(input_file: Path) -> List[float]:
     """Runs every step of the pipeline and returns a list of timing for each step.
     The optional argument is only used during de-bugging b/c this is the slowest step."""
@@ -358,11 +366,18 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     user_input = _yml_to_dict(yml_path_file=input_file)
     ui: Final = SimpleNamespace(**user_input)
 
-    nii_path_file = string_to_path(ui.nii_path_file)
-    mask_path_file_outer = string_to_path(ui.mask_path_file_outer)
-    stl_path_file_outer = string_to_path(ui.stl_path_file_outer)
-    mask_path_file_brain = string_to_path(ui.mask_path_file_brain)
-    stl_path_file_brain = string_to_path(ui.stl_path_file_brain)
+    # nii_path_file = string_to_path(ui.nii_path_file)
+    # mask_path_file_outer = string_to_path(ui.mask_path_file_outer)
+    # stl_path_file_outer = string_to_path(ui.stl_path_file_outer)
+    # mask_path_file_brain = string_to_path(ui.mask_path_file_brain)
+    # stl_path_file_brain = string_to_path(ui.stl_path_file_brain)
+    # nii_path_file = Path(__file__).parent.joinpath("../../tests/files").resolve().joinpath(ui.nii_path_file)
+    # nii_path_file = Path(__file__).parent.joinpath("../../tests/files").resolve().joinpath(ui.nii_path_file)
+    nii_path_file = path_to_test_files().joinpath(ui.nii_path_file)
+    mask_path_file_outer = path_to_test_files().joinpath(ui.mask_path_file_outer)
+    stl_path_file_outer = path_to_test_files().joinpath(ui.stl_path_file_outer)
+    mask_path_file_brain = path_to_test_files().joinpath(ui.mask_path_file_brain)
+    stl_path_file_brain = path_to_test_files().joinpath(ui.stl_path_file_brain)
 
     has_metadata = ui.has_metadata
     process_outer = ui.process_outer

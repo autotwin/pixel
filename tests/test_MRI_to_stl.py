@@ -298,10 +298,11 @@ def test_yml_to_dict():
     input_file_path = data_path.joinpath("small_sphere_no_metadata.yaml")
     db = mts._yml_to_dict(yml_path_file=input_file_path)
     assert db["version"] == 1.1
-    assert (
-        db["nii_path_file"]
-        == "~/autotwin/pixel/tests/files/small_sphere_no_metadata.nii"
-    )
+    # assert (
+    #     db["nii_path_file"]
+    #     == "~/autotwin/pixel/tests/files/small_sphere_no_metadata.nii"
+    # )
+    assert db["nii_path_file"] == "small_sphere_no_metadata.nii"
     assert db["has_metadata"] is False
     assert db["alpha_shape_param"] == 0.05
     assert db["dilation_radius"] == 5

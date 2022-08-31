@@ -5,6 +5,7 @@ from mpl_toolkits import mplot3d
 import os
 from pathlib import Path
 from stl import mesh
+from typing import Tuple
 
 
 def create_folder(path: Path):
@@ -35,7 +36,7 @@ def create_skull_still(
     return
 
 
-def get_visualization_relevant_path_names(input_file_str: str) -> Path:
+def get_visualization_relevant_path_names(input_file_str: str) -> Tuple[Path, Path]:
     """Given an input file string. Will return visualization folder and stl file paths."""
     input_file = mts.string_to_path(input_file_str)
     input_dict = mts._yml_to_dict(yml_path_file=input_file)
@@ -43,7 +44,7 @@ def get_visualization_relevant_path_names(input_file_str: str) -> Path:
     stl_path_file_outer_str = input_dict["stl_path_file_outer"]
     vis_path = mts.string_to_path(vis_path_str)
     stl_path_file_outer = mts.string_to_path(stl_path_file_outer_str)
-    return vis_path, stl_path_file_outer
+    return (vis_path, stl_path_file_outer)
 
 
 def run_visualization_code(input_file_str: str) -> None:
