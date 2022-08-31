@@ -386,12 +386,10 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     # begin timing
     time_all.append(time.time())
 
-    # -- begin test if we can pass this block ---
-    # # import the NIfTI file as an array
-    # if has_metadata is False:
-    #     img_array = ntn.NIfTI_to_numpy(nii_path_file)
-    # time_all.append(time.time())
-    # -- end test if we can pass this block ---
+    # import the NIfTI file as an array
+    if has_metadata is False:
+        img_array = ntn.NIfTI_to_numpy(nii_path_file)
+    time_all.append(time.time())
 
     # create the mask that defines the outer surface
     if process_outer:
