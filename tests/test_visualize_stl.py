@@ -126,11 +126,13 @@ def test_run_visualization_code():
     input_file_str = str(path_to_test_files().joinpath("quad_sphere_no_metadata.yaml"))
     vstl.run_visualization_code(input_file_str)
 
-    vis_path = Path(
-        "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
-    ).expanduser()
+    # vis_path = Path(
+    #     "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
+    # ).expanduser()
+    vis_path = path_to_test_files().joinpath("quad_sphere_no_metadata_visualizations")
 
-    path = Path(str(vis_path) + "/skull_still_image_elev-90_azim90.png")
+    # path = Path(str(vis_path) + "/skull_still_image_elev-90_azim90.png")
+    path = vis_path.joinpath("skull_still_image_elev-90_azim90.png")
     file_exists = path.is_file()
     assert file_exists  # assert test file was written
     if file_exists:
