@@ -445,12 +445,12 @@ def test_resample_equal_voxel_mask():
 
 
 # try to get this test running on CI with variations on io path
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_run_and_time_all_code():
     def path_setup_in_files(fname):
         self_path_file = Path(__file__)
