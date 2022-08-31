@@ -358,31 +358,16 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     user_input = _yml_to_dict(yml_path_file=input_file)
     ui: Final = SimpleNamespace(**user_input)
 
-    # nii_path_file = string_to_path(user_input["nii_path_file"])
-    # mask_path_file_outer = string_to_path(user_input["mask_path_file_outer"])
-    # stl_path_file_outer = string_to_path(user_input["stl_path_file_outer"])
-    # mask_path_file_brain = string_to_path(user_input["mask_path_file_brain"])
-    # stl_path_file_brain = string_to_path(user_input["stl_path_file_brain"])
     nii_path_file = string_to_path(ui.nii_path_file)
     mask_path_file_outer = string_to_path(ui.mask_path_file_outer)
     stl_path_file_outer = string_to_path(ui.stl_path_file_outer)
     mask_path_file_brain = string_to_path(ui.mask_path_file_brain)
     stl_path_file_brain = string_to_path(ui.stl_path_file_brain)
 
-    # has_metadata = string_to_boolean(user_input["has_metadata"])
-    # process_outer = string_to_boolean(user_input["process_outer"])
-    # process_brain = string_to_boolean(user_input["process_brain"])
     has_metadata = ui.has_metadata
     process_outer = ui.process_outer
     process_brain = ui.process_brain
 
-    # alpha_shape_param = user_input["alpha_shape_param"]
-    # white_matter_min = user_input["white_matter_min"]
-    # white_matter_max = user_input["white_matter_max"]
-    # dilation_radius = user_input["dilation_radius"]
-    # close_radius = user_input["close_radius"]
-    # padding_for_stl = user_input["padding_for_stl"]
-    # marching_step_size = user_input["marching_step_size"]
     alpha_shape_param = ui.alpha_shape_param
     white_matter_min = ui.white_matter_min
     white_matter_max = ui.white_matter_max
@@ -391,12 +376,6 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     padding_for_stl = ui.padding_for_stl
     marching_step_size = ui.marching_step_size
 
-    # scale_ax_0 = user_input["scale_ax_0"]
-    # scale_ax_1 = user_input["scale_ax_1"]
-    # scale_ax_2 = user_input["scale_ax_2"]
-    # axis_slice_transverse = user_input["axis_slice_transverse"]
-    # # axis_slice_coronal = user_input["axis_slice_coronal"]
-    # # axis_slice_sagittal = user_input["axis_slice_sagittal"]
     scale_ax_0 = ui.scale_ax_0
     scale_ax_1 = ui.scale_ax_1
     scale_ax_2 = ui.scale_ax_2
@@ -407,11 +386,12 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     # begin timing
     time_all.append(time.time())
 
-    # import the NIfTI file as an array
-    # if has_metadata == False:
-    if has_metadata is False:
-        img_array = ntn.NIfTI_to_numpy(nii_path_file)
-    time_all.append(time.time())
+    # -- begin test if we can pass this block ---
+    # # import the NIfTI file as an array
+    # if has_metadata is False:
+    #     img_array = ntn.NIfTI_to_numpy(nii_path_file)
+    # time_all.append(time.time())
+    # -- end test if we can pass this block ---
 
     # create the mask that defines the outer surface
     if process_outer:
