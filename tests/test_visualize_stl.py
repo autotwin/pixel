@@ -31,12 +31,12 @@ def path_to_test_files() -> Path:
     return files_path
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_create_skull_still():
     # yml_path = Path(
     #     "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
