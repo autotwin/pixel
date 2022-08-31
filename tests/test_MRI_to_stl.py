@@ -8,6 +8,7 @@ from skimage.measure import marching_cubes
 import platform
 import pytest
 from stl import mesh
+from typing import Final
 
 # import sys # unused import
 
@@ -296,12 +297,13 @@ def test_yml_to_dict():
     data_path = self_path.joinpath("files").resolve()
     input_file_path = data_path.joinpath("small_sphere_no_metadata.yaml")
     db = mts._yml_to_dict(yml_path_file=input_file_path)
-    assert db["version"] == 1.0
-    assert (
-        db["nii_path_file"]
-        == "~/autotwin/pixel/tests/files/small_sphere_no_metadata.nii"
-    )
-    assert db["has_metadata"] == "False"
+    assert db["version"] == 1.1
+    # assert (
+    #     db["nii_path_file"]
+    #     == "~/autotwin/pixel/tests/files/small_sphere_no_metadata.nii"
+    # )
+    assert db["nii_path_file"] == "small_sphere_no_metadata.nii"
+    assert db["has_metadata"] is False
     assert db["alpha_shape_param"] == 0.05
     assert db["dilation_radius"] == 5
 
@@ -353,17 +355,33 @@ def test_when_io_fails():
     assert error.typename == "OSError"
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+def local_platform() -> bool:
+    """Tests if the current thread is on a local platform.
+    Local platforms are defined by a string contained in this
+    function.  Returns True if the platform name matches one of the
+    known local platform patterns, False otherwise.
+    """
+    local_platform_substrings: Final = ("atlas", "bu.edu", "eml")
+    thread_node = platform.uname().node
+    # if thread_node in local_platform_substrings:
+    if any(x in thread_node for x in local_platform_substrings):
+        return True
+    else:
+        return False
+
+
 def test_string_to_path():
     known = Path(__file__)
     path_string_1 = "~/autotwin/pixel/tests/test_MRI_to_stl.py"
     found = mts.string_to_path(path_string_1)
-    assert known == found
+
+    if local_platform():
+        # Enforce this part of the test only for local machines; the
+        # CI runner machines won't pass this test because of their
+        # code isolation strategies.
+        assert known == found
+
+    assert isinstance(found, Path)
 
 
 def test_path_to_string():
@@ -380,41 +398,35 @@ def test_string_to_boolean():
     assert mts.string_to_boolean("True")
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
 def test_save_mask():
-    path_string_1 = "~/autotwin/pixel/tests/test_save_mask_987311.npy"
-    path = mts.string_to_path(path_string_1)
+    this_path = Path(__file__).parent
+    this_path_file = this_path.joinpath("test_save_mask_987311.npy")
+
     mask = morphology.ball(10, dtype=bool)
-    mts.save_mask(mask, path)
-    file_exists = path.is_file()
+    mts.save_mask(mask, this_path_file)
+
+    file_exists = this_path_file.is_file()
+
     assert file_exists  # assert test file was written
     if file_exists:
-        os.remove(path)  # clean up, remove test file
+        os.remove(this_path_file)  # clean up, remove test file
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
 def test_save_stl():
-    path_string_1 = "~/autotwin/pixel/tests/test_save_stl_987311.stl"
-    path = mts.string_to_path(path_string_1)
+    this_path = Path(__file__).parent
+    this_path_file = this_path.joinpath("test_save_mask_987311.stl")
+
     mask = morphology.ball(10, dtype=bool)
     marching_step_size = 1
     pad_size = 10
     mesh = mts.mask_to_mesh_for_stl(mask, marching_step_size, pad_size)
-    mts.save_stl(mesh, path)
-    file_exists = path.is_file()
+
+    mts.save_stl(mesh, this_path_file)
+
+    file_exists = this_path_file.is_file()
     assert file_exists  # assert test file was written
     if file_exists:
-        os.remove(path)  # clean up, remove test file
+        os.remove(this_path_file)  # clean up, remove test file
 
 
 def test_resample_equal_voxel_mask():
@@ -434,12 +446,12 @@ def test_resample_equal_voxel_mask():
 
 
 # try to get this test running on CI with variations on io path
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_run_and_time_all_code():
     def path_setup_in_files(fname):
         self_path_file = Path(__file__)
@@ -455,12 +467,13 @@ def test_run_and_time_all_code():
     path_4 = path_setup_in_files("quad_sphere_no_metadata_brain.stl")
 
     output_path_list = [path_1, path_2, path_3, path_4]
-    for op in output_path_list:
-        if op.is_file():
-            os.remove(op)
+    # for op in output_path_list:
+    #     if op.is_file():
+    #         os.remove(op)
 
     time_all = mts.run_and_time_all_code(input_file)
     n_timing_steps = 7  # semantic clarity, avoid magic numbers
     assert len(time_all) == n_timing_steps
     for op in output_path_list:
         assert op.is_file()
+        os.remove(op)  # clean up

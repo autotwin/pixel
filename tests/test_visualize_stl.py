@@ -3,16 +3,17 @@ from atpixel import NIfTI_to_numpy as ntn
 from atpixel import visualize_stl as vstl
 import os
 from pathlib import Path
-import platform
-import pytest
+
+# import platform
+# import pytest
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_create_folder():
     path_string_1 = "~/autotwin/pixel/tests/test_path_311768"
     path = mts.string_to_path(path_string_1)
@@ -23,23 +24,39 @@ def test_create_folder():
     #    os.remove(path)  # clean up, remove test path -- it seems that I do not currently have permission for this!
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+def path_to_test_files() -> Path:
+    """Locates the autotwin/pixel/tests/files/ folder relative to this
+    current file.
+    """
+    files_path = Path(__file__).parent.joinpath("files").resolve()
+    return files_path
+
+
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_create_skull_still():
-    yml_path = Path(
-        "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
-    ).expanduser()
+    # yml_path = Path(
+    #     "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+    # ).expanduser()
+    yml_path = path_to_test_files().joinpath("quad_sphere_no_metadata.yaml")
     db = mts._yml_to_dict(yml_path_file=yml_path)
-    stl_path_file_outer = Path(db["stl_path_file_outer"]).expanduser()
-    vis_path = Path(db["visualization_folder_name"]).expanduser()
+
+    # stl_path_file_outer = Path(db["stl_path_file_outer"]).expanduser()
+    # vis_path = Path(db["visualization_folder_name"]).expanduser()
+    stl_path_file_outer = path_to_test_files().joinpath(db["stl_path_file_outer"])
+    vis_path = path_to_test_files().joinpath(db["visualization_folder_name"])
+
     alpha_shape_param = db["alpha_shape_param"]
     axis_slice_transverse = db["axis_slice_transverse"]
     marching_step_size = db["marching_step_size"]
-    nii_path_file = Path(db["nii_path_file"]).expanduser()
+
+    # nii_path_file = Path(db["nii_path_file"]).expanduser()
+    nii_path_file = path_to_test_files().joinpath(db["nii_path_file"])
+
     padding_for_stl = db["padding_for_stl"]
 
     img_array = ntn.NIfTI_to_numpy(nii_path_file)
@@ -60,43 +77,101 @@ def test_create_skull_still():
         os.remove(path)
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_get_visualization_relevant_path_name():
-    input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+    # input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+    input_file_str = str(path_to_test_files().joinpath("quad_sphere_no_metadata.yaml"))
+
     vis_path, stl_path_file_outer = vstl.get_visualization_relevant_path_names(
         input_file_str
     )
-    assert str(vis_path) == str(
-        Path(
-            "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
-        ).expanduser()
-    )
-    assert str(stl_path_file_outer) == str(
-        mts.string_to_path(
-            "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl"
-        ).expanduser()
-    )
+    # assert str(vis_path) == str(
+    #     Path(
+    #         "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
+    #     ).expanduser()
+    # )
+    aa = str(path_to_test_files().joinpath("quad_sphere_no_metadata_visualizations"))
+    assert str(vis_path) == aa
+
+    # assert str(stl_path_file_outer) == str(
+    #     mts.string_to_path(
+    #         "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl"
+    #     ).expanduser()
+    # )
+    bb = str(path_to_test_files().joinpath("quad_sphere_no_metadata_outer.stl"))
+    # assert str(stl_path_file_outer) == "quad_sphere_no_metadata_outer.stl"
+    assert str(stl_path_file_outer) == bb
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
+# @pytest.mark.skip("WIP: CBH needs to rearchitect io.")
 def test_run_visualization_code():
+    # example without a home user or ~
+    # input_file_str = /scratch/tests/test_visualize_stl.py
+
+    # absolute pathing
     input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+
+    # relative pathing
+    input_file_str = str(path_to_test_files().joinpath("quad_sphere_no_metadata.yaml"))
     vstl.run_visualization_code(input_file_str)
-    vis_path = Path(
-        "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
-    ).expanduser()
-    path = Path(str(vis_path) + "/skull_still_image_elev-90_azim90.png")
+
+    # vis_path = Path(
+    #     "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
+    # ).expanduser()
+    vis_path = path_to_test_files().joinpath("quad_sphere_no_metadata_visualizations")
+
+    # path = Path(str(vis_path) + "/skull_still_image_elev-90_azim90.png")
+    path = vis_path.joinpath("skull_still_image_elev-90_azim90.png")
     file_exists = path.is_file()
     assert file_exists  # assert test file was written
     if file_exists:
         os.remove(path)
+
+
+"""
+def set_age(person, age) -> None:
+    person.age = age
+
+def get_age() -> int:
+    return 42
+
+
+def age(person, age) -> None:
+    person.age = age # setter
+
+
+def age() -> int:
+    return 42 # getter
+"""
+
+"""
+# impertive, verbs
+chad.get_age()
+emma.set_age(24)
+
+
+# declaration, nouns
+chad.age()
+emma.age(24)
+
+"""
+
+
+"""
+c.r.u.d.
+create
+read
+update
+delete
+"""

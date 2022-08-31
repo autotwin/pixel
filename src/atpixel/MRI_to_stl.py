@@ -27,7 +27,8 @@ from stl import mesh
 
 # import sys
 import time
-from typing import Iterable, Union, List
+from types import SimpleNamespace
+from typing import Final, Iterable, List, Union
 import yaml
 
 # def re_scale_MRI_intensity(array: np.ndarray) -> np.ndarray:
@@ -219,8 +220,8 @@ def faces_verts_to_mesh_object(verts: Iterable, faces: Iterable) -> mesh.Mesh.dt
 
 
 def mask_to_mesh_for_stl(
-    mask: Iterable, marching_step_size: int, pad_size: int = 10
-) -> mesh.Mesh.dtype:
+    mask: np.ndarray, marching_step_size: int, pad_size: int = 10
+) -> mesh.Mesh:
     """Given a mask array. Converts the mask array into a stl mesh object."""
     padded_mask = pad_array(mask, pad_size)
     verts, faces = padded_mask_to_verts_faces(padded_mask, marching_step_size)
@@ -261,7 +262,8 @@ def _yml_to_dict(*, yml_path_file: Path) -> dict:
         raise OSError
 
     version_specified = db.get("version")
-    version_implemented = 1.0
+    # version_implemented = 1.0
+    version_implemented: Final[float] = 1.1
 
     if version_specified != version_implemented:
         raise ValueError(
@@ -325,18 +327,28 @@ def string_to_boolean(val: str) -> bool:
     return val_boolean
 
 
-def save_mask(mask: Iterable, mask_path_file: Path) -> None:
-    """Given a mask numpy array and file name will save mask in the mask folder."""
+def save_mask(mask: np.ndarray, mask_path_file: Path) -> None:
+    """Given a mask numpy array and file name will save mask in the
+    mask folder.
+    """
     mask_path_string = path_to_string(mask_path_file)
     np.save(mask_path_string, mask)
     return
 
 
-def save_stl(mesh: mesh.Mesh.dtype, file_name: Path) -> None:
+def save_stl(mesh: mesh.Mesh, file_name: Path) -> None:
     """Given a stl formatted mesh will save information in the stl."""
     file_name_str = path_to_string(file_name)
     mesh.save(file_name_str)
     return
+
+
+def path_to_test_files() -> Path:
+    """Locates the autotwin/pixel/tests/files/ folder relative to this
+    current file.
+    """
+    files_path = Path(__file__).parent.joinpath("../../tests/files").resolve()
+    return files_path
 
 
 def run_and_time_all_code(input_file: Path) -> List[float]:
@@ -352,37 +364,44 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
 
     # extract input information from yaml file
     user_input = _yml_to_dict(yml_path_file=input_file)
+    ui: Final = SimpleNamespace(**user_input)
 
-    nii_path_file = string_to_path(user_input["nii_path_file"])
-    mask_path_file_outer = string_to_path(user_input["mask_path_file_outer"])
-    stl_path_file_outer = string_to_path(user_input["stl_path_file_outer"])
-    mask_path_file_brain = string_to_path(user_input["mask_path_file_brain"])
-    stl_path_file_brain = string_to_path(user_input["stl_path_file_brain"])
+    # nii_path_file = string_to_path(ui.nii_path_file)
+    # mask_path_file_outer = string_to_path(ui.mask_path_file_outer)
+    # stl_path_file_outer = string_to_path(ui.stl_path_file_outer)
+    # mask_path_file_brain = string_to_path(ui.mask_path_file_brain)
+    # stl_path_file_brain = string_to_path(ui.stl_path_file_brain)
+    # nii_path_file = Path(__file__).parent.joinpath("../../tests/files").resolve().joinpath(ui.nii_path_file)
+    # nii_path_file = Path(__file__).parent.joinpath("../../tests/files").resolve().joinpath(ui.nii_path_file)
+    nii_path_file = path_to_test_files().joinpath(ui.nii_path_file)
+    mask_path_file_outer = path_to_test_files().joinpath(ui.mask_path_file_outer)
+    stl_path_file_outer = path_to_test_files().joinpath(ui.stl_path_file_outer)
+    mask_path_file_brain = path_to_test_files().joinpath(ui.mask_path_file_brain)
+    stl_path_file_brain = path_to_test_files().joinpath(ui.stl_path_file_brain)
 
-    has_metadata = string_to_boolean(user_input["has_metadata"])
-    process_outer = string_to_boolean(user_input["process_outer"])
-    process_brain = string_to_boolean(user_input["process_brain"])
+    has_metadata = ui.has_metadata
+    process_outer = ui.process_outer
+    process_brain = ui.process_brain
 
-    alpha_shape_param = user_input["alpha_shape_param"]
-    white_matter_min = user_input["white_matter_min"]
-    white_matter_max = user_input["white_matter_max"]
-    dilation_radius = user_input["dilation_radius"]
-    close_radius = user_input["close_radius"]
-    padding_for_stl = user_input["padding_for_stl"]
-    marching_step_size = user_input["marching_step_size"]
+    alpha_shape_param = ui.alpha_shape_param
+    white_matter_min = ui.white_matter_min
+    white_matter_max = ui.white_matter_max
+    dilation_radius = ui.dilation_radius
+    close_radius = ui.close_radius
+    padding_for_stl = ui.padding_for_stl
+    marching_step_size = ui.marching_step_size
 
-    scale_ax_0 = user_input["scale_ax_0"]
-    scale_ax_1 = user_input["scale_ax_1"]
-    scale_ax_2 = user_input["scale_ax_2"]
-    axis_slice_transverse = user_input["axis_slice_transverse"]
-    # axis_slice_coronal = user_input["axis_slice_coronal"]
-    # axis_slice_sagittal = user_input["axis_slice_sagittal"]
+    scale_ax_0 = ui.scale_ax_0
+    scale_ax_1 = ui.scale_ax_1
+    scale_ax_2 = ui.scale_ax_2
+    axis_slice_transverse = ui.axis_slice_transverse
+    # axis_slice_coronal = ui.axis_slice_coronal
+    # axis_slice_sagittal = ui.axis_slice_sagittal
 
     # begin timing
     time_all.append(time.time())
 
     # import the NIfTI file as an array
-    # if has_metadata == False:
     if has_metadata is False:
         img_array = ntn.NIfTI_to_numpy(nii_path_file)
     time_all.append(time.time())

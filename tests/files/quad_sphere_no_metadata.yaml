@@ -1,24 +1,38 @@
 # User input to accompany small_sphere_no_metadata.nii
-version: 1.0
-nii_path_file: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.nii"
-mask_path_file_outer: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.npy"
-stl_path_file_outer: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl"
-mask_path_file_brain: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.npy"
-stl_path_file_brain: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.stl"
-visualization_folder_name: "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
-has_metadata: 'False'
-process_outer: 'True'
-process_brain: 'True' 
-alpha_shape_param: 0.05 #0.0 is convex, 0.1 works well, 2.0 is concave (not functioning properly)
-white_matter_min: 400. #further work will need to be done to refine this method
-white_matter_max: 600. #further work will need to be done to refine this method
-dilation_radius: 5 #future will will overhaul this method
-close_radius: 5 #future will will overhaul this method
-padding_for_stl: 10 #just to make sure the stl is closed even if it intersects with the domain boundaries
-marching_step_size: 1 #input parameter to marching_cubes
-scale_ax_0: 1. #scale of the 0 dimension (future version will read this from NIfTI metadata)
-scale_ax_1: 1. #scale of the 1 dimension (future version will read this from NIfTI metadata)
-scale_ax_2: 1. #scale of the 2 dimension (future version will read this from NIfTI metadata) 
-axis_slice_transverse: 0 #axis that dictates the transverse direction (future version will read this from NIfTI metadata)
-axis_slice_coronal: 1 #axis that dictates the coronal direction (future version will read this from NIfTI metadata)
-axis_slice_sagittal: 2 #axis that dictates the sagittal direction (future version will read this from NIfTI metadata)
+version: 1.1
+
+# nii_path_file: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata.nii
+# mask_path_file_outer: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.npy
+# stl_path_file_outer: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl
+# mask_path_file_brain: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.npy
+# stl_path_file_brain: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_brain.stl
+# visualization_folder_name: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations
+#
+# try relative pathing (relative to the location of this .yml file)
+nii_path_file: quad_sphere_no_metadata.nii
+mask_path_file_outer: quad_sphere_no_metadata_outer.npy
+stl_path_file_outer: quad_sphere_no_metadata_outer.stl
+mask_path_file_brain: quad_sphere_no_metadata_brain.npy
+stl_path_file_brain: quad_sphere_no_metadata_brain.stl
+visualization_folder_name: quad_sphere_no_metadata_visualizations
+# visualization_folder_name: ~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations
+
+has_metadata: false
+process_outer: true
+process_brain: true
+
+alpha_shape_param: 0.05 # 0.0 is convex, 0.1 works well, 2.0 is concave (not functioning properly)
+white_matter_min: 400. # further work will need to be done to refine this method
+white_matter_max: 600. # further work will need to be done to refine this method
+dilation_radius: 5 # future will will overhaul this method
+close_radius: 5 # future will will overhaul this method
+padding_for_stl: 10 # just to make sure the stl is closed even if it intersects with the domain boundaries
+marching_step_size: 1 # input parameter to marching_cubes
+
+scale_ax_0: 1. # scale of the 0 dimension (future version will read this from NIfTI metadata)
+scale_ax_1: 1. # scale of the 1 dimension (future version will read this from NIfTI metadata)
+scale_ax_2: 1. # scale of the 2 dimension (future version will read this from NIfTI metadata) 
+
+axis_slice_transverse: 0 # axis that dictates the transverse direction (future version will read this from NIfTI metadata)
+axis_slice_coronal: 1 # axis that dictates the coronal direction (future version will read this from NIfTI metadata)
+axis_slice_sagittal: 2 # axis that dictates the sagittal direction (future version will read this from NIfTI metadata)
