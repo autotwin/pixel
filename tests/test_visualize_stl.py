@@ -3,8 +3,9 @@ from atpixel import NIfTI_to_numpy as ntn
 from atpixel import visualize_stl as vstl
 import os
 from pathlib import Path
-import platform
-import pytest
+
+# import platform
+# import pytest
 
 
 # @pytest.mark.skipif(
@@ -94,14 +95,17 @@ def test_get_visualization_relevant_path_name():
     #         "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
     #     ).expanduser()
     # )
-    assert str(vis_path) == "quad_sphere_no_metadata_visualizations"
+    aa = str(path_to_test_files().joinpath("quad_sphere_no_metadata_visualizations"))
+    assert str(vis_path) == aa
 
     # assert str(stl_path_file_outer) == str(
     #     mts.string_to_path(
     #         "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_outer.stl"
     #     ).expanduser()
     # )
-    assert str(stl_path_file_outer) == "quad_sphere_no_metadata_outer.stl"
+    bb = str(path_to_test_files().joinpath("quad_sphere_no_metadata_outer.stl"))
+    # assert str(stl_path_file_outer) == "quad_sphere_no_metadata_outer.stl"
+    assert str(stl_path_file_outer) == bb
 
 
 # @pytest.mark.skipif(
@@ -110,16 +114,62 @@ def test_get_visualization_relevant_path_name():
 #     and ("eml" not in platform.uname().node),
 #     reason="Run on Atlas, eml, and bu.edu machines only.",
 # )
-@pytest.mark.skip("WIP: CBH needs to rearchitect io.")
+# @pytest.mark.skip("WIP: CBH needs to rearchitect io.")
 def test_run_visualization_code():
-    # input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+    # example without a home user or ~
+    # input_file_str = /scratch/tests/test_visualize_stl.py
+
+    # absolute pathing
+    input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+
+    # relative pathing
     input_file_str = str(path_to_test_files().joinpath("quad_sphere_no_metadata.yaml"))
     vstl.run_visualization_code(input_file_str)
+
     vis_path = Path(
         "~/autotwin/pixel/tests/files/quad_sphere_no_metadata_visualizations"
     ).expanduser()
+
     path = Path(str(vis_path) + "/skull_still_image_elev-90_azim90.png")
     file_exists = path.is_file()
     assert file_exists  # assert test file was written
     if file_exists:
         os.remove(path)
+
+
+"""
+def set_age(person, age) -> None:
+    person.age = age
+
+def get_age() -> int:
+    return 42
+
+
+def age(person, age) -> None:
+    person.age = age # setter
+
+
+def age() -> int:
+    return 42 # getter
+"""
+
+"""
+# impertive, verbs
+chad.get_age()
+emma.set_age(24)
+
+
+# declaration, nouns
+chad.age()
+emma.age(24)
+
+"""
+
+
+"""
+c.r.u.d.
+create
+read
+update
+delete
+"""
