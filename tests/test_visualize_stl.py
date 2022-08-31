@@ -76,14 +76,14 @@ def test_create_skull_still():
         os.remove(path)
 
 
-@pytest.mark.skipif(
-    ("atlas" not in platform.uname().node)
-    and ("bu.edu" not in platform.uname().node)
-    and ("eml" not in platform.uname().node),
-    reason="Run on Atlas, eml, and bu.edu machines only.",
-)
+# @pytest.mark.skipif(
+#     ("atlas" not in platform.uname().node)
+#     and ("bu.edu" not in platform.uname().node)
+#     and ("eml" not in platform.uname().node),
+#     reason="Run on Atlas, eml, and bu.edu machines only.",
+# )
 def test_get_visualization_relevant_path_name():
-    input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+    # input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
     input_file_str = str(path_to_test_files().joinpath("quad_sphere_no_metadata.yaml"))
 
     vis_path, stl_path_file_outer = vstl.get_visualization_relevant_path_names(
@@ -112,7 +112,7 @@ def test_get_visualization_relevant_path_name():
 # )
 @pytest.mark.skip("WIP: CBH needs to rearchitect io.")
 def test_run_visualization_code():
-    input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
+    # input_file_str = "~/autotwin/pixel/tests/files/quad_sphere_no_metadata.yaml"
     input_file_str = str(path_to_test_files().joinpath("quad_sphere_no_metadata.yaml"))
     vstl.run_visualization_code(input_file_str)
     vis_path = Path(
