@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atpixel"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
   { name="Chad Hovey", email="chovey@sandia.gov" },
   { name="Emma Lejeune", email="elejeune@bu.edu" },
@@ -66,6 +66,12 @@ dependencies = [
     "typing_extensions==4.3.0",
     "zipp==3.8.1",
 ]
+
+
+# Entry Points
+# https://setuptools.pypa.io/en/latest/userguide/entry_point.html
+[project.scripts]
+version="atpixel.command_line:version"
 
 [project.urls]
 "Homepage" = "https://github.com/autotwin/pixel"

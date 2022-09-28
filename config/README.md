@@ -2,7 +2,7 @@
 
 ## Overview
 
-* Configure the local machine with a virtual environment named `atpixelenv`.  
+* Configure the local machine with a virtual environment named `atpixelenv`.
 * Create a `pyproject.toml` to configure the `atpixel` package.
 * Install the `atpixel` module in developer mode.
 * Assess unit tests and code coverage of the `atpixel` module.
@@ -155,7 +155,7 @@ zipp               3.8.1
 Run from the REPL:
 
 ```bash
-(atpixelenv) cbh@atlas/Users/cbh/autotwin/pixel> python
+(atpixelenv) ~/autotwin/pixel> python
 Python 3.8.13 | packaged by conda-forge | (default, Mar 25 2022, 06:05:16)
 [Clang 12.0.1 ] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
@@ -165,10 +165,21 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> quit()
 ```
 
+Entry Points
+
+* *New* as of version 0.0.6
+* Verify the `version` entry point functionality
+
+```bash
+(atpixelenv) ~/autotwin/pixel> version
+autotwin pixel module version:
+0.0.6
+```
+
 Run the tests with `pytest`:
 
 ```bash
-(atpixelenv) cbh@atlas/Users/cbh/autotwin/pixel> pytest --cov=atpixel --cov-report term-missing
+(atpixelenv) ~/autotwin/pixel> pytest --cov=atpixel --cov-report term-missing
 ================================================================ test session starts =================================================================
 platform darwin -- Python 3.8.13, pytest-7.1.2, pluggy-1.0.0
 rootdir: /Users/cbh/autotwin/pixel
