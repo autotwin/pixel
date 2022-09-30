@@ -1,6 +1,9 @@
 # local vs code configuration
 .vscode/
 
+# for users of venv (instead of conda) ignore the local venv
+atpixelenv/
+
 # macOS database files
 .DS_Store
 
