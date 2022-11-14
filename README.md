@@ -25,9 +25,9 @@ Example of creating multiple isosurfaces from the T1 Utah SCI image:
   <img src="https://github.com/autotwin/data/blob/main/figs/skull_brain_animation.gif" alt="animated skull and brain isosurface"/>
 </p>
 
-Example of high throughput import of T1 MRIs from the IXI dataset: 
+Example of high throughput surface creation from T1 MRIs in the IXI dataset: 
 
 <p align="center">
-  <img src="https://github.com/autotwin/data/blob/main/figs/example_grid_25_x_4_data.png" alt="grid of example head MRIs"/>
+  <img src="https://github.com/autotwin/data/blob/main/figs/example_grid_25_x_4.png" alt="grid of example segmented MRIs"/>
 </p>
 
