@@ -246,7 +246,7 @@ def test_padded_mask_to_verts_faces():
     pad_size = 3
     array_padded = mts.pad_array(array, pad_size)
     verts_known, faces_known, normals_known, _ = marching_cubes(
-        array_padded, step_size=marching_step_size
+        array_padded, step_size=marching_step_size, gradient_direction="ascent",
     )
     verts_found, faces_found = mts.padded_mask_to_verts_faces(
         array_padded, marching_step_size

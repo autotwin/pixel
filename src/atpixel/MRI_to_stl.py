@@ -206,7 +206,7 @@ def pad_array(array: Iterable, pad_size: int) -> Iterable:
 
 def padded_mask_to_verts_faces(array: Iterable, marching_step_size: int) -> Iterable:
     """Given an array and marching cubes step size. Runs the marching cubes algorithm."""
-    verts, faces, normals, _ = marching_cubes(array, step_size=marching_step_size)
+    verts, faces, normals, _ = marching_cubes(array, gradient_direction="ascent", step_size=marching_step_size)
     return verts, faces
 
 
@@ -402,8 +402,7 @@ def run_and_time_all_code(input_file: Path) -> List[float]:
     time_all.append(time.time())
 
     # import the NIfTI file as an array
-    if has_metadata is False:
-        img_array = ntn.NIfTI_to_numpy(nii_path_file)
+    img_array = ntn.NIfTI_to_numpy(nii_path_file)
     time_all.append(time.time())
 
     # create the mask that defines the outer surface
